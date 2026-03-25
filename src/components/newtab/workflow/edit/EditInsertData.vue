@@ -178,7 +178,10 @@ import { defineAsyncComponent, inject, ref, shallowReactive, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useToast } from 'vue-toastification';
 import browser from 'webextension-polyfill';
-import { read as readXlsx, utils as utilsXlsx } from 'xlsx';
+import {
+  readFromBase64 as readXlsx,
+  sheetToJson as xlsxSheetToJson,
+} from '@/utils/xlsxParser';
 import EditAutocomplete from './EditAutocomplete.vue';
 
 const SharedCodemirror = defineAsyncComponent(() =>
@@ -278,9 +281,7 @@ async function previewData(index, item) {
       result = JSON.stringify(result, null, 2);
     } else if (isExcel && readAsJson) {
       const base64Xls = await readFileAsBase64(result);
-      const wb = readXlsx(base64Xls.slice(base64Xls.indexOf(',')), {
-        type: 'base64',
-      });
+      const wb = await readXlsx(base64Xls);
 
       const inputtedSheet = (item.xlsSheet || '').trim();
       const sheetName = wb.SheetNames.includes(inputtedSheet)
@@ -291,7 +292,7 @@ async function previewData(index, item) {
       if (item.xlsRange) options.range = item.xlsRange;
       if (!action.includes('header')) options.header = 1;
 
-      const sheetData = utilsXlsx.sheet_to_json(wb.Sheets[sheetName], options);
+      const sheetData = xlsxSheetToJson(wb.Sheets[sheetName], options);
       result = JSON.stringify(sheetData, null, 2);
     }
 

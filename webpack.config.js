@@ -143,6 +143,9 @@ const options = {
   },
   resolve: {
     alias,
+    fallback: {
+      buffer: require.resolve('buffer/'),
+    },
     extensions: fileExtensions
       .map((extension) => `.${extension}`)
       .concat(['.js', '.jsx', '.vue', '.css']),
@@ -150,6 +153,9 @@ const options = {
   plugins: [
     new MiniCssExtractPlugin(),
     new VueLoaderPlugin(),
+    new webpack.ProvidePlugin({
+      Buffer: ['buffer', 'Buffer'],
+    }),
     new webpack.DefinePlugin({
       BROWSER_TYPE: JSON.stringify(env.BROWSER),
     }),
