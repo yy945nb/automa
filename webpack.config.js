@@ -122,13 +122,19 @@ const options = {
         },
       },
       {
-        test: /\.js$/,
+        test: /\.(js|jsx)$/,
         use: [
           {
             loader: 'source-map-loader',
           },
           {
             loader: 'babel-loader',
+            options: {
+              presets: [
+                '@babel/preset-env',
+                ['@babel/preset-react', { runtime: 'automatic' }],
+              ],
+            },
           },
         ],
         exclude: /node_modules/,
@@ -139,7 +145,7 @@ const options = {
     alias,
     extensions: fileExtensions
       .map((extension) => `.${extension}`)
-      .concat(['.js', '.vue', '.css']),
+      .concat(['.js', '.jsx', '.vue', '.css']),
   },
   plugins: [
     new MiniCssExtractPlugin(),
