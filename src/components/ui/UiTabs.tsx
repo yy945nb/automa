@@ -80,7 +80,7 @@ export default function UiTabs({
     <TabsContext.Provider value={{ modelValue, type, color, small, fill, updateActive, hoverHandler }}>
       <div
         className={`ui-tabs relative flex items-center space-x-1 text-gray-600 dark:text-gray-200 ${tabTypeClass} ${type === 'fill' ? color : ''} ${className}`.trim()}
-        aria-role="tablist"
+        role="tablist"
         onMouseLeave={() => setShowHoverIndicator(false)}
       >
         <div

@@ -113,11 +113,18 @@ export default function UiPaginatedSelect({
     }
   }
 
+  // Use a ref so the debounced function always calls the latest fetchOptions
+  const fetchOptionsRef = useRef(fetchOptions);
+  fetchOptionsRef.current = fetchOptions;
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const debouncedFetch = useMemo(() => debounce(() => fetchOptions(true), 300), []);
+  const debouncedFetch = useMemo(
+    () => debounce((...args: unknown[]) => fetchOptionsRef.current(args[0] as boolean), 300),
+    []
+  );
 
   useEffect(() => {
-    debouncedFetch();
+    debouncedFetch(true);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchKeyword]);
 

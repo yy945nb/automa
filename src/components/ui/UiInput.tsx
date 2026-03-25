@@ -105,8 +105,8 @@ export default function UiInput({
           type={type}
           autoComplete={autocomplete ?? undefined}
           autoFocus={autofocus}
-          min={min !== null ? min : undefined}
-          max={max !== null ? max : undefined}
+          min={min}
+          max={max}
           list={list ?? undefined}
           step={step ?? undefined}
           className={inputClasses}

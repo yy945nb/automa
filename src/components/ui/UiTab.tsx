@@ -26,7 +26,7 @@ export default function UiTab({ value = '', disabled = false, children }: UiTabP
     <button
       className={classes}
       aria-selected={isActive}
-      aria-role="tab"
+      role="tab"
       tabIndex={isActive ? 0 : -1}
       onMouseEnter={hoverHandler}
       onClick={() => updateActive(value)}

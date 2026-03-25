@@ -96,7 +96,13 @@ export default function UiDialog({ customSlot }: UiDialogProps) {
         const isAsync = options.async;
         if (isAsync) setLoading(true);
 
-        const cbReturn = callback(param) ?? true;
+        const cbReturn = callback(param);
+
+        // undefined/void return → treat as "close"
+        if (cbReturn === undefined) {
+          destroy();
+          return;
+        }
 
         if (typeof cbReturn === 'boolean') {
           if (cbReturn) destroy();
