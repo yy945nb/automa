@@ -1,3 +1,6 @@
+// Vue components are registered here via require.context (*.vue files).
+// React components live alongside them as *.tsx files and are imported directly
+// where needed — they do not go through this Vue registration pipeline.
 import VTooltip from '../directives/VTooltip';
 import VAutofocus from '../directives/VAutofocus';
 import VClosePopover from '../directives/VClosePopover';

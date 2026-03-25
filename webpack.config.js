@@ -133,13 +133,30 @@ const options = {
         ],
         exclude: /node_modules/,
       },
+      {
+        test: /\.tsx?$/,
+        use: [
+          {
+            loader: 'babel-loader',
+          },
+          {
+            loader: 'ts-loader',
+            options: {
+              transpileOnly: true,
+              // Allow <script lang="ts"> inside Vue SFCs during the migration period
+              appendTsSuffixTo: [/\.vue$/],
+            },
+          },
+        ],
+        exclude: /node_modules/,
+      },
     ],
   },
   resolve: {
     alias,
     extensions: fileExtensions
       .map((extension) => `.${extension}`)
-      .concat(['.js', '.vue', '.css']),
+      .concat(['.ts', '.tsx', '.js', '.vue', '.css']),
   },
   plugins: [
     new MiniCssExtractPlugin(),
