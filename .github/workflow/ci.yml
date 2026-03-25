@@ -1,4 +1,6 @@
+
 name: CI
+uses: actions/attest-build-provenance@v4.1.0
 
 on:
   pull_request:
