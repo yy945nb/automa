@@ -122,13 +122,19 @@ const options = {
         },
       },
       {
-        test: /\.js$/,
+        test: /\.(js|jsx)$/,
         use: [
           {
             loader: 'source-map-loader',
           },
           {
             loader: 'babel-loader',
+            options: {
+              presets: [
+                '@babel/preset-env',
+                ['@babel/preset-react', { runtime: 'automatic' }],
+              ],
+            },
           },
         ],
         exclude: /node_modules/,
@@ -137,13 +143,19 @@ const options = {
   },
   resolve: {
     alias,
+    fallback: {
+      buffer: require.resolve('buffer/'),
+    },
     extensions: fileExtensions
       .map((extension) => `.${extension}`)
-      .concat(['.js', '.vue', '.css']),
+      .concat(['.js', '.jsx', '.vue', '.css']),
   },
   plugins: [
     new MiniCssExtractPlugin(),
     new VueLoaderPlugin(),
+    new webpack.ProvidePlugin({
+      Buffer: ['buffer', 'Buffer'],
+    }),
     new webpack.DefinePlugin({
       BROWSER_TYPE: JSON.stringify(env.BROWSER),
     }),

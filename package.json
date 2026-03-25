@@ -16,7 +16,8 @@
     "dev": "node utils/webserver.js",
     "dev:firefox": "cross-env BROWSER=firefox npm run dev",
     "prettier": "prettier --write '**/*.{js,jsx,css,html}'",
-    "lint": "eslint --ext .js,.vue --ignore-path .gitignore ."
+    "lint": "eslint --ext .js,.vue,.jsx --ignore-path .gitignore .",
+    "test": "vitest run"
   },
   "engines": {
     "node": ">=14.18.1"
@@ -92,6 +93,8 @@
     "tippy.js": "^6.3.1",
     "v-remixicon": "^0.1.1",
     "vue": "3.4.38",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "vue-i18n": "^9.14.5",
     "vue-imask": "^6.4.2",
     "vue-router": "^4.2.4",
@@ -100,12 +103,19 @@
     "vuedraggable": "^4.1.0",
     "vuex": "^4.0.2",
     "webextension-polyfill": "^0.12.0",
-    "xlsx": "https://cdn.sheetjs.com/xlsx-0.19.1/xlsx-0.19.1.tgz"
+    "exceljs": "^4.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.7",
     "@babel/eslint-parser": "^7.18.2",
     "@babel/preset-env": "^7.20.2",
+    "@babel/preset-react": "^7.18.6",
+    "buffer": "^6.0.3",
+    "@testing-library/jest-dom": "^6.1.4",
+    "@testing-library/react": "^14.0.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@vitejs/plugin-react": "^4.0.0",
     "@intlify/vue-i18n-loader": "^4.2.0",
     "@tailwindcss/typography": "^0.5.1",
     "@types/chrome": "^0.0.267",
@@ -124,12 +134,15 @@
     "eslint-friendly-formatter": "^4.0.1",
     "eslint-import-resolver-webpack": "^0.13.2",
     "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-vue": "^9.4.0",
     "file-loader": "^6.2.0",
     "fs-extra": "^11.1.0",
     "html-loader": "^4.2.0",
     "html-webpack-plugin": "^5.5.0",
+    "jsdom": "^22.1.0",
     "lint-staged": "^13.0.2",
     "mini-css-extract-plugin": "^2.3.0",
     "postcss": "^8.4.21",
@@ -143,7 +156,8 @@
     "web-worker": "^1.2.0",
     "webpack": "5.76.0",
     "webpack-cli": "^5.0.1",
-    "webpack-dev-server": "^4.11.1"
+    "webpack-dev-server": "^4.11.1",
+    "vitest": "^1.0.0"
   },
   "volta": {
     "node": "20.11.1"

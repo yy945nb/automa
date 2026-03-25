@@ -1,4 +1,4 @@
-import { read as readXlsx, utils as utilsXlsx } from 'xlsx';
+import { readFromBase64 as readXlsx, sheetToJson as xlsxSheetToJson } from '@/utils/xlsxParser';
 import Papa from 'papaparse';
 import { parseJSON } from '@/utils/helper';
 import getFile, { readFileAsBase64 } from '@/utils/getFile';
@@ -43,9 +43,7 @@ async function insertData({ id, data }, { refData }) {
         result = parsedCSV.data || [];
       } else if (isExcel && readAsJson) {
         const base64Xls = await readFileAsBase64(result);
-        const wb = readXlsx(base64Xls.slice(base64Xls.indexOf(',')), {
-          type: 'base64',
-        });
+        const wb = await readXlsx(base64Xls);
 
         const inputtedSheet = (item.xlsSheet || '').trim();
         const sheetName = wb.SheetNames.includes(inputtedSheet)
@@ -56,10 +54,7 @@ async function insertData({ id, data }, { refData }) {
         if (item.xlsRange) options.range = item.xlsRange;
         if (!action.includes('header')) options.header = 1;
 
-        const sheetData = utilsXlsx.sheet_to_json(
-          wb.Sheets[sheetName],
-          options
-        );
+        const sheetData = xlsxSheetToJson(wb.Sheets[sheetName], options);
         result = sheetData;
       }
 
