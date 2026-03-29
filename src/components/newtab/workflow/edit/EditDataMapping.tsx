@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react'
 import { useTranslation } from 'react-i18next';
 import { nanoid } from 'nanoid';
 import { debounce } from '@/utils/helper';
-import InsertWorkflowData from './InsertWorkflowData.vue';
+import InsertWorkflowData from './InsertWorkflowData.tsx';
 
 interface EditDataMappingProps {
   children?: React.ReactNode;

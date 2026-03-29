@@ -5,7 +5,7 @@ import { useDialog } from '@/composable/dialog';
 import { useWorkflowStore } from '@/stores/workflow';
 import { useLiveQuery } from '@/composable/liveQuery';
 import dbStorage from '@/db/storage';
-import StorageEditTable from './StorageEditTable.vue';
+import StorageEditTable from './StorageEditTable.tsx';
 
 interface StorageTablesProps {
   children?: React.ReactNode;

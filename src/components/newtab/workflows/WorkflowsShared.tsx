@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import SharedCard from '@/components/newtab/shared/SharedCard.vue';
+import SharedCard from '@/components/newtab/shared/SharedCard.tsx';
 import RendererWorkflowService from '@/service/renderer/RendererWorkflowService';
 import { useSharedWorkflowStore } from '@/stores/sharedWorkflow';
 import { arraySorter } from '@/utils/helper';

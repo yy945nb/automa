@@ -4,9 +4,9 @@ import cloneDeep from 'lodash.clonedeep';
 import { useStore } from '@/stores/main';
 import { getBlocks } from '@/utils/getSharedData';
 import { categories } from '@/utils/shared';
-import EditBlockSettings from './edit/EditBlockSettings.vue';
-import EditorCustomEdge from './editor/EditorCustomEdge.vue';
-import EditorSearchBlocks from './editor/EditorSearchBlocks.vue';
+import EditBlockSettings from './edit/EditBlockSettings.tsx';
+import EditorCustomEdge from './editor/EditorCustomEdge.tsx';
+import EditorSearchBlocks from './editor/EditorSearchBlocks.tsx';
 
 interface WorkflowEditorProps {
   children?: React.ReactNode;

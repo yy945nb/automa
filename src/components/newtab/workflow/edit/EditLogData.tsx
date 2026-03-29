@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useWorkflowStore } from '@/stores/workflow';
-import InsertWorkflowData from './InsertWorkflowData.vue';
+import InsertWorkflowData from './InsertWorkflowData.tsx';
 
 interface EditLogDataProps {
   children?: React.ReactNode;

@@ -3,8 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { nanoid } from 'nanoid';
 import cloneDeep from 'lodash.clonedeep';
 import { conditionBuilder } from '@/utils/shared';
-import SharedElSelectorActions from '@/components/newtab/shared/SharedElSelectorActions.vue';
-import EditAutocomplete from '../../workflow/edit/EditAutocomplete.vue';
+import SharedElSelectorActions from '@/components/newtab/shared/SharedElSelectorActions.tsx';
+import EditAutocomplete from '../../workflow/edit/EditAutocomplete.tsx';
 
 interface ConditionBuilderInputsProps {
   children?: React.ReactNode;

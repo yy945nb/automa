@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react'
 import { useTranslation } from 'react-i18next';
 import { dataExportTypes } from '@/utils/shared';
 import { useHasPermissions } from '@/composable/hasPermissions';
-import EditAutocomplete from './EditAutocomplete.vue';
+import EditAutocomplete from './EditAutocomplete.tsx';
 
 interface EditExportDataProps {
   children?: React.ReactNode;

@@ -1,14 +1,14 @@
 import VAutofocus from '@/directives/VAutofocus';
-import UiCard from '@/components/ui/UiCard.vue';
-import UiInput from '@/components/ui/UiInput.vue';
-import UiList from '@/components/ui/UiList.vue';
-import UiListItem from '@/components/ui/UiListItem.vue';
-import UiButton from '@/components/ui/UiButton.vue';
-import UiSelect from '@/components/ui/UiSelect.vue';
-import UiSpinner from '@/components/ui/UiSpinner.vue';
-import UiTextarea from '@/components/ui/UiTextarea.vue';
-import UiPopover from '@/components/ui/UiPopover.vue';
-import TransitionExpand from '@/components/transitions/TransitionExpand.vue';
+import UiCard from '@/components/ui/UiCard.tsx';
+import UiInput from '@/components/ui/UiInput.tsx';
+import UiList from '@/components/ui/UiList.tsx';
+import UiListItem from '@/components/ui/UiListItem.tsx';
+import UiButton from '@/components/ui/UiButton.tsx';
+import UiSelect from '@/components/ui/UiSelect.tsx';
+import UiSpinner from '@/components/ui/UiSpinner.tsx';
+import UiTextarea from '@/components/ui/UiTextarea.tsx';
+import UiPopover from '@/components/ui/UiPopover.tsx';
+import TransitionExpand from '@/components/transitions/TransitionExpand.tsx';
 
 export default function (app) {
   app.component('UiCard', UiCard);
