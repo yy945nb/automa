@@ -77,7 +77,7 @@ export default function WorkflowContainer() {
     setTimeout(() => {
       tabChangingRef.current = false;
     }, 1000);
-  }, [activeTab]);
+  }, [activeTab, tabs, navigate]);
 
   // Update tab path/name when route changes externally
   useEffect(() => {
@@ -110,7 +110,7 @@ export default function WorkflowContainer() {
         return next;
       });
     }, 1000);
-  }, [location.pathname]);
+  }, [location.pathname, activeTab, tabs]);
 
   // Initialize tabs from localStorage on mount
   useEffect(() => {

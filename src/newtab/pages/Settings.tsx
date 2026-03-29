@@ -40,6 +40,7 @@ export default function Settings() {
         </nav>
         <div className="settings-content flex-1">
           <select
+            aria-label="Navigate to settings section"
             className="mb-4 w-full md:hidden"
             onChange={(e) => navigate(e.target.value)}
           >
