@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import EditWorkflowParameters from './EditWorkflowParameters.vue';
+import EditWorkflowParameters from './EditWorkflowParameters.tsx';
 
 interface EditParameterPromptProps {
   children?: React.ReactNode;

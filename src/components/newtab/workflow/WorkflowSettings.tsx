@@ -2,10 +2,10 @@ import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react'
 import { useTranslation } from 'react-i18next';
 import cloneDeep from 'lodash.clonedeep';
 import { debounce } from '@/utils/helper';
-import SettingsTable from './settings/SettingsTable.vue';
-import SettingsBlocks from './settings/SettingsBlocks.vue';
-import SettingsEvents from './settings/SettingsEvents.vue';
-import SettingsGeneral from './settings/SettingsGeneral.vue';
+import SettingsTable from './settings/SettingsTable.tsx';
+import SettingsBlocks from './settings/SettingsBlocks.tsx';
+import SettingsEvents from './settings/SettingsEvents.tsx';
+import SettingsGeneral from './settings/SettingsGeneral.tsx';
 
 interface WorkflowSettingsProps {
   children?: React.ReactNode;

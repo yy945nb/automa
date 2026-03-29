@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import EditAutocomplete from './EditAutocomplete.vue';
-import EditInteractionBase from './EditInteractionBase.vue';
+import EditAutocomplete from './EditAutocomplete.tsx';
+import EditInteractionBase from './EditInteractionBase.tsx';
 
 interface EditUploadFileProps {
   children?: React.ReactNode;

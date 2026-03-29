@@ -2,12 +2,12 @@ import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react'
 import { useTranslation } from 'react-i18next';
 import { eventList } from '@/utils/shared';
 import { toCamelCase } from '@/utils/helper';
-import EditInteractionBase from './EditInteractionBase.vue';
-import TriggerEventMouse from './TriggerEvent/TriggerEventMouse.vue';
-import TriggerEventTouch from './TriggerEvent/TriggerEventTouch.vue';
-import TriggerEventWheel from './TriggerEvent/TriggerEventWheel.vue';
-import TriggerEventInput from './TriggerEvent/TriggerEventInput.vue';
-import TriggerEventKeyboard from './TriggerEvent/TriggerEventKeyboard.vue';
+import EditInteractionBase from './EditInteractionBase.tsx';
+import TriggerEventMouse from './TriggerEvent/TriggerEventMouse.tsx';
+import TriggerEventTouch from './TriggerEvent/TriggerEventTouch.tsx';
+import TriggerEventWheel from './TriggerEvent/TriggerEventWheel.tsx';
+import TriggerEventInput from './TriggerEvent/TriggerEventInput.tsx';
+import TriggerEventKeyboard from './TriggerEvent/TriggerEventKeyboard.tsx';
 
 interface EditTriggerEventProps {
   children?: React.ReactNode;

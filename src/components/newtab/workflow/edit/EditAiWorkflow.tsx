@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import UiFileInput from '@/components/ui/UiFileInput.vue';
-import UiInput from '@/components/ui/UiInput.vue';
-import UiPaginatedSelect from '@/components/ui/UiPaginatedSelect.vue';
+import UiFileInput from '@/components/ui/UiFileInput.tsx';
+import UiInput from '@/components/ui/UiInput.tsx';
+import UiPaginatedSelect from '@/components/ui/UiPaginatedSelect.tsx';
 import { useWorkflowStore } from '@/stores/workflow';
 import cloneDeep from 'lodash.clonedeep';
-import InsertWorkflowData from './InsertWorkflowData.vue';
+import InsertWorkflowData from './InsertWorkflowData.tsx';
 
 interface EditAiWorkflowProps {
   children?: React.ReactNode;

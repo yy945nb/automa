@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { contentTypes } from '@/utils/shared';
-import EditAutocomplete from './EditAutocomplete.vue';
-import InsertWorkflowData from './InsertWorkflowData.vue';
+import EditAutocomplete from './EditAutocomplete.tsx';
+import InsertWorkflowData from './InsertWorkflowData.tsx';
 
 interface EditWebhookProps {
   children?: React.ReactNode;

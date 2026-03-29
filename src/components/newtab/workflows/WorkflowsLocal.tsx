@@ -8,7 +8,7 @@ import { useWorkflowStore } from '@/stores/workflow';
 import { exportWorkflow } from '@/utils/workflowData';
 import { useSharedWorkflowStore } from '@/stores/sharedWorkflow';
 import RendererWorkflowService from '@/service/renderer/RendererWorkflowService';
-import WorkflowsLocalCard from './WorkflowsLocalCard.vue';
+import WorkflowsLocalCard from './WorkflowsLocalCard.tsx';
 
 interface WorkflowsLocalProps {
   children?: React.ReactNode;

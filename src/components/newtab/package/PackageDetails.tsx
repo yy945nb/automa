@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { debounce } from '@/utils/helper';
-import SharedWysiwyg from '@/components/newtab/shared/SharedWysiwyg.vue';
+import SharedWysiwyg from '@/components/newtab/shared/SharedWysiwyg.tsx';
 
 interface PackageDetailsProps {
   children?: React.ReactNode;

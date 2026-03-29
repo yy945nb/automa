@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import UiInput from '@/components/ui/UiInput.vue';
-import UiSelect from '@/components/ui/UiSelect.vue';
-import EditAutocomplete from './EditAutocomplete.vue';
+import UiInput from '@/components/ui/UiInput.tsx';
+import UiSelect from '@/components/ui/UiSelect.tsx';
+import EditAutocomplete from './EditAutocomplete.tsx';
 
 interface EditNewTabProps {
   children?: React.ReactNode;

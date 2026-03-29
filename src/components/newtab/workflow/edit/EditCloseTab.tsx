@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import EditAutocomplete from './EditAutocomplete.vue';
+import EditAutocomplete from './EditAutocomplete.tsx';
 
 interface EditCloseTabProps {
   children?: React.ReactNode;

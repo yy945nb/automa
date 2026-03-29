@@ -3,8 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { fetchApi } from '@/utils/api';
 import googleSheetsApi from '@/utils/googleSheetsApi';
 import { convert2DArrayToArrayObj, debounce } from '@/utils/helper';
-import EditAutocomplete from './EditAutocomplete.vue';
-import InsertWorkflowData from './InsertWorkflowData.vue';
+import EditAutocomplete from './EditAutocomplete.tsx';
+import InsertWorkflowData from './InsertWorkflowData.tsx';
 
 interface EditGoogleSheetsProps {
   children?: React.ReactNode;

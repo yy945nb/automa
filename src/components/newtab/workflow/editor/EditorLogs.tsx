@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react'
 import { useTranslation } from 'react-i18next';
 import dbLogs from '@/db/logs';
 import { useLiveQuery } from '@/composable/liveQuery';
-import SharedLogsTable from '@/components/newtab/shared/SharedLogsTable.vue';
+import SharedLogsTable from '@/components/newtab/shared/SharedLogsTable.tsx';
 
 interface EditorLogsProps {
   children?: React.ReactNode;

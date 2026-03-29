@@ -4,7 +4,7 @@ import { useHasPermissions } from '@/composable/hasPermissions';
 import { useStore } from '@/stores/main';
 import cloneDeep from 'lodash.clonedeep';
 import { nanoid } from 'nanoid/non-secure';
-import EditAutocomplete from './EditAutocomplete.vue';
+import EditAutocomplete from './EditAutocomplete.tsx';
 
 interface EditGoogleDriveProps {
   children?: React.ReactNode;

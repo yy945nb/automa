@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import WorkflowShare from '@/components/newtab/workflow/WorkflowShare.vue';
+import WorkflowShare from '@/components/newtab/workflow/WorkflowShare.tsx';
 import { useGroupTooltip } from '@/composable/groupTooltip';
 
 interface WorkflowSharedActionsProps {

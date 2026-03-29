@@ -1,20 +1,19 @@
-// Vue components are registered here via require.context (*.vue files).
-// React components live alongside them as *.tsx files and are imported directly
-// where needed — they do not go through this Vue registration pipeline.
+// React components are imported directly where needed.
+// This file registers directives for any remaining Vue parts of the app.
 import VTooltip from '../directives/VTooltip';
 import VAutofocus from '../directives/VAutofocus';
 import VClosePopover from '../directives/VClosePopover';
 
-const uiComponents = require.context('../components/ui', false, /\.vue$/);
+const uiComponents = require.context('../components/ui', false, /\.tsx$/);
 const transitionComponents = require.context(
   '../components/transitions',
   false,
-  /\.vue$/
+  /\.tsx$/
 );
 
 function componentsExtractor(app, components) {
   components.keys().forEach((key) => {
-    const componentName = key.replace(/(.\/)|\.vue$/g, '');
+    const componentName = key.replace(/(.\/)|\.tsx$/g, '');
     const component = components(key)?.default ?? {};
 
     app.component(componentName, component);

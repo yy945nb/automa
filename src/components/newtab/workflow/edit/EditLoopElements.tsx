@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { nanoid } from 'nanoid/non-secure';
-import SharedElSelectorActions from '@/components/newtab/shared/SharedElSelectorActions.vue';
-import EditAutocomplete from './EditAutocomplete.vue';
-import EditInteractionBase from './EditInteractionBase.vue';
+import SharedElSelectorActions from '@/components/newtab/shared/SharedElSelectorActions.tsx';
+import EditAutocomplete from './EditAutocomplete.tsx';
+import EditInteractionBase from './EditInteractionBase.tsx';
 
 interface EditLoopElementsProps {
   children?: React.ReactNode;

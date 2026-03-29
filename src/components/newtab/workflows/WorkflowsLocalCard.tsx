@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import SharedCard from '@/components/newtab/shared/SharedCard.vue';
+import SharedCard from '@/components/newtab/shared/SharedCard.tsx';
 
 interface WorkflowsLocalCardProps {
   children?: React.ReactNode;

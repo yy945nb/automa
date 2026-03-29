@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { nanoid } from 'nanoid';
-import SharedConditionBuilder from '@/components/newtab/shared/SharedConditionBuilder/index.vue';
+import SharedConditionBuilder from '@/components/newtab/shared/SharedConditionBuilder/index.tsx';
 
 interface EditWhileLoopProps {
   children?: React.ReactNode;

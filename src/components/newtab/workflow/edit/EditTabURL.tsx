@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import InsertWorkflowData from './InsertWorkflowData.vue';
+import InsertWorkflowData from './InsertWorkflowData.tsx';
 
 interface EditTabURLProps {
   children?: React.ReactNode;

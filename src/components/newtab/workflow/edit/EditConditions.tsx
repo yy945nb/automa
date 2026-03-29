@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react'
 import { useTranslation } from 'react-i18next';
 import { nanoid } from 'nanoid';
 import { debounce } from '@/utils/helper';
-import SharedConditionBuilder from '@/components/newtab/shared/SharedConditionBuilder/index.vue';
+import SharedConditionBuilder from '@/components/newtab/shared/SharedConditionBuilder/index.tsx';
 
 interface EditConditionsProps {
   children?: React.ReactNode;

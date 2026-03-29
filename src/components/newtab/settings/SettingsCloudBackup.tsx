@@ -6,7 +6,7 @@ import { parseJSON } from '@/utils/helper';
 import { useUserStore } from '@/stores/user';
 import { useWorkflowStore } from '@/stores/workflow';
 import dayjs from '@/lib/dayjs';
-import SettingsBackupItems from './SettingsBackupItems.vue';
+import SettingsBackupItems from './SettingsBackupItems.tsx';
 
 interface SettingsCloudBackupProps {
   children?: React.ReactNode;
