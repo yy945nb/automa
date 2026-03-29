@@ -122,18 +122,29 @@ const options = {
         },
       },
       {
-        test: /\.(js|jsx)$/,
+        test: /\.js$/,
         use: [
           {
             loader: 'source-map-loader',
           },
           {
             loader: 'babel-loader',
+          },
+        ],
+        exclude: /node_modules/,
+      },
+      {
+        test: /\.tsx?$/,
+        use: [
+          {
+            loader: 'babel-loader',
+          },
+          {
+            loader: 'ts-loader',
             options: {
-              presets: [
-                '@babel/preset-env',
-                ['@babel/preset-react', { runtime: 'automatic' }],
-              ],
+              transpileOnly: true,
+              // Allow <script lang="ts"> inside Vue SFCs during the migration period
+              appendTsSuffixTo: [/\.vue$/],
             },
           },
         ],
@@ -143,19 +154,13 @@ const options = {
   },
   resolve: {
     alias,
-    fallback: {
-      buffer: require.resolve('buffer/'),
-    },
     extensions: fileExtensions
       .map((extension) => `.${extension}`)
-      .concat(['.js', '.jsx', '.vue', '.css']),
+      .concat(['.ts', '.tsx', '.js', '.vue', '.css']),
   },
   plugins: [
     new MiniCssExtractPlugin(),
     new VueLoaderPlugin(),
-    new webpack.ProvidePlugin({
-      Buffer: ['buffer', 'Buffer'],
-    }),
     new webpack.DefinePlugin({
       BROWSER_TYPE: JSON.stringify(env.BROWSER),
     }),
