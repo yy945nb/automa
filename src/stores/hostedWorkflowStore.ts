@@ -46,9 +46,9 @@ export const useHostedWorkflowStore = create<HostedWorkflowStore>((set, get) => 
   insert: async (data, idKey = 'hostId') => {
     const updated = { ...get().workflows };
     if (Array.isArray(data)) {
-      data.forEach((item) => { updated[idKey] = item; });
+      data.forEach((item) => { updated[item[idKey] ?? idKey] = item; });
     } else {
-      updated[idKey] = data;
+      updated[(data as any)[idKey] ?? idKey] = data;
     }
     set({ workflows: updated });
     await saveToStorage(updated);

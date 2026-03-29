@@ -54,7 +54,7 @@ export const useUserStore = create<UserStore>((set, get) => ({
           try {
             const response = await fetchApi('/me', { auth: true });
             const result = await response.json();
-            if (!response.ok) throw new Error(response.message);
+            if (!response.ok) throw new Error(result.message);
             return result;
           } catch (error) {
             console.error(error);
