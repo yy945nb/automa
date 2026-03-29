@@ -2,6 +2,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { HashRouter } from 'react-router-dom';
 import App from './App';
+import '@/lib/i18n';
 import '../assets/css/tailwind.css';
 import '../assets/css/fonts.css';
 import '../assets/css/style.css';
