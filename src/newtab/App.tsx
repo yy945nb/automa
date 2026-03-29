@@ -220,10 +220,10 @@ export default function App() {
       )}
 
       <SharedPermissionsModal
-        modelValue={permissionState.showModal}
+        show={permissionState.showModal}
         permissions={permissionState.items}
-        onUpdate:modelValue={(val: boolean) =>
-          setPermissionState((prev) => ({ ...prev, showModal: val }))
+        onClose={() =>
+          setPermissionState((prev) => ({ ...prev, showModal: false }))
         }
       />
     </>

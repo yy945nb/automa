@@ -1,45 +1,51 @@
-import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import dayjs from 'dayjs';
-import credentialUtil from '@/utils/credentialUtil';
-import { useLiveQuery } from '@/composable/liveQuery';
-import dbStorage from '@/db/storage';
+import UiInput from '@/components/ui/UiInput';
+import UiButton from '@/components/ui/UiButton';
+import UiTable from '@/components/ui/UiTable';
 
-interface StorageCredentialsProps {
-  children?: React.ReactNode;
-  [key: string]: any;
+interface Credential {
+  id: string;
+  name: string;
+  value: string;
+  description?: string;
 }
 
-export default function StorageCredentials({ children, ...props }: StorageCredentialsProps) {
+export default function StorageCredentials() {
   const { t } = useTranslation();
-  // TODO: Convert Pinia stores, Vue Router, and other Vue-specific logic to React equivalents
+  const [query, setQuery] = useState('');
+  const [credentials, setCredentials] = useState<Credential[]>([]);
+  const [showAdd, setShowAdd] = useState(false);
+
+  const tableHeaders = [
+    { text: t('common.name'), value: 'name' },
+    { text: 'Value', value: 'value' },
+    { text: 'Actions', value: 'actions' },
+  ];
+
   return (
-    <div className="storagecredentials-wrapper">
-      {/* Converted from Vue SFC - template below */}
+    <div className="mt-4">
       <div className="mt-6 flex">
-          <ui-input
-            value={state.query} onChange={(e: any) => { /* TODO update state.query */ }}
-            placeholder={t('common.search')}
-            prepend-icon="riSearch2Line"
-          />
-          <div className="grow"></div>
-          <ui-button
-            variant="accent"
-            style="min-width: 120px"
-            className="ml-4"
-            onClick={addState.show = true}
-          >
-            {t('credential.add')}
-          </ui-button>
-        </div>
-        <ui-table
-          item-key="id"
-          headers={tableHeaders}
-          items={credentials}
-          search={state.query}
-          className="mt-4 w-full"
+        <UiInput
+          modelValue={query}
+          onChange={(val) => setQuery(String(val))}
+          placeholder={t('common.search')}
+          prependIcon="riSearch2Line"
+        />
+        <div className="grow" />
+        <UiButton
+          variant="accent"
+          className="ml-4"
+          onClick={() => setShowAdd(true)}
         >
-          <template #item-value> ************
+          {t('credential.add')}
+        </UiButton>
+      </div>
+      <UiTable
+        headers={tableHeaders}
+        items={credentials}
+        className="mt-4 w-full"
+      />
     </div>
   );
 }

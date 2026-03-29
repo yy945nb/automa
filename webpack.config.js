@@ -107,28 +107,13 @@ const options = {
         },
       },
       {
-        test: /\.js$/,
+        test: /\.[jt]sx?$/,
         use: [
           {
             loader: 'source-map-loader',
           },
           {
             loader: 'babel-loader',
-          },
-        ],
-        exclude: /node_modules/,
-      },
-      {
-        test: /\.tsx?$/,
-        use: [
-          {
-            loader: 'babel-loader',
-          },
-          {
-            loader: 'ts-loader',
-            options: {
-              transpileOnly: true,
-            },
           },
         ],
         exclude: /node_modules/,
@@ -171,7 +156,7 @@ const options = {
             };
             const isChrome = env.BROWSER === 'chrome';
 
-            if (manifestObj.version.includes('-')) {
+            if (manifestObj.version && manifestObj.version.includes('-')) {
               const [version, preRelease] = manifestObj.version.split('-');
 
               if (isChrome) {
