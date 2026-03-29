@@ -2,7 +2,6 @@ const webpack = require('webpack');
 const path = require('path');
 const fileSystem = require('fs-extra');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const { VueLoaderPlugin } = require('vue-loader');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -42,9 +41,9 @@ const options = {
   entry: {
     sandbox: path.join(__dirname, 'src', 'sandbox', 'index.js'),
     execute: path.join(__dirname, 'src', 'execute', 'index.js'),
-    newtab: path.join(__dirname, 'src', 'newtab', 'index.js'),
-    popup: path.join(__dirname, 'src', 'popup', 'index.js'),
-    params: path.join(__dirname, 'src', 'params', 'index.js'),
+    newtab: path.join(__dirname, 'src', 'newtab', 'index.jsx'),
+    popup: path.join(__dirname, 'src', 'popup', 'index.jsx'),
+    params: path.join(__dirname, 'src', 'params', 'index.jsx'),
     background: path.join(__dirname, 'src', 'background', 'index.js'),
     contentScript: path.join(__dirname, 'src', 'content', 'index.js'),
     offscreen: path.join(__dirname, 'src', 'offscreen', 'index.js'),
@@ -54,7 +53,7 @@ const options = {
       'content',
       'services',
       'recordWorkflow',
-      'index.js'
+      'index.jsx'
     ),
     webService: path.join(
       __dirname,
@@ -68,7 +67,7 @@ const options = {
       'src',
       'content',
       'elementSelector',
-      'index.js'
+      'index.jsx'
     ),
   },
   chromeExtensionBoilerplate: {
@@ -88,13 +87,6 @@ const options = {
   module: {
     rules: [
       {
-        test: /\.vue$/,
-        loader: 'vue-loader',
-        options: {
-          reactivityTransform: true,
-        },
-      },
-      {
         test: /\.css$/,
         use: [
           MiniCssExtractPlugin.loader,
@@ -107,13 +99,6 @@ const options = {
         ],
       },
       {
-        test: /\.(json5?|ya?ml)$/, // target json, json5, yaml and yml files
-        type: 'javascript/auto',
-        // Use `Rule.include` to specify the files of locale messages to be pre-compiled
-        include: [path.resolve(__dirname, './src/locales')],
-        loader: '@intlify/vue-i18n-loader',
-      },
-      {
         test: new RegExp(`.(${fileExtensions.join('|')})$`),
         type: 'asset/resource',
         dependency: { not: [/node_modules/] },
@@ -122,7 +107,7 @@ const options = {
         },
       },
       {
-        test: /\.js$/,
+        test: /\.[jt]sx?$/,
         use: [
           {
             loader: 'source-map-loader',
@@ -133,34 +118,16 @@ const options = {
         ],
         exclude: /node_modules/,
       },
-      {
-        test: /\.tsx?$/,
-        use: [
-          {
-            loader: 'babel-loader',
-          },
-          {
-            loader: 'ts-loader',
-            options: {
-              transpileOnly: true,
-              // Allow <script lang="ts"> inside Vue SFCs during the migration period
-              appendTsSuffixTo: [/\.vue$/],
-            },
-          },
-        ],
-        exclude: /node_modules/,
-      },
     ],
   },
   resolve: {
     alias,
     extensions: fileExtensions
       .map((extension) => `.${extension}`)
-      .concat(['.ts', '.tsx', '.js', '.vue', '.css']),
+      .concat(['.ts', '.tsx', '.jsx', '.js', '.css']),
   },
   plugins: [
     new MiniCssExtractPlugin(),
-    new VueLoaderPlugin(),
     new webpack.DefinePlugin({
       BROWSER_TYPE: JSON.stringify(env.BROWSER),
     }),
@@ -189,7 +156,7 @@ const options = {
             };
             const isChrome = env.BROWSER === 'chrome';
 
-            if (manifestObj.version.includes('-')) {
+            if (manifestObj.version && manifestObj.version.includes('-')) {
               const [version, preRelease] = manifestObj.version.split('-');
 
               if (isChrome) {
@@ -250,16 +217,6 @@ const options = {
       filename: 'offscreen.html',
       chunks: ['offscreen'],
       cache: false,
-    }),
-    new webpack.DefinePlugin({
-      __VUE_OPTIONS_API__: true,
-      __VUE_PROD_DEVTOOLS__: false,
-    }),
-    // Fix i18n warning
-    new webpack.DefinePlugin({
-      __VUE_I18N_FULL_INSTALL__: JSON.stringify(true),
-      __INTLIFY_PROD_DEVTOOLS__: JSON.stringify(false),
-      __VUE_I18N_LEGACY_API__: JSON.stringify(false),
     }),
   ],
   infrastructureLogging: {

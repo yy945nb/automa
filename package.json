@@ -16,7 +16,7 @@
     "dev": "node utils/webserver.js",
     "dev:firefox": "cross-env BROWSER=firefox npm run dev",
     "prettier": "prettier --write '**/*.{js,jsx,css,html}'",
-    "lint": "eslint --ext .js,.vue --ignore-path .gitignore ."
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx --ignore-path .gitignore ."
   },
   "engines": {
     "node": ">=14.18.1"
@@ -25,15 +25,9 @@
     "pre-commit": "npx lint-staged"
   },
   "lint-staged": {
-    "*.{js,ts,vue}": "eslint --fix"
+    "*.{js,ts,jsx,tsx,vue}": "eslint --fix"
   },
   "dependencies": {
-    "i18next": "^23.7.6",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-i18next": "^14.0.1",
-    "react-router-dom": "^6.21.1",
-    "zustand": "^4.4.7",
     "@codemirror/autocomplete": "^6.9.0",
     "@codemirror/commands": "^6.6.1",
     "@codemirror/lang-css": "^6.2.1",
@@ -62,6 +56,7 @@
     "@vueuse/head": "^1.3.1",
     "@vueuse/rxjs": "^9.12.0",
     "@vuex-orm/core": "^0.36.4",
+    "ajv": "^8.18.0",
     "codemirror": "^6.0.1",
     "compare-versions": "^6.0.0-rc.1",
     "cron-parser": "^4.6.0",
@@ -73,6 +68,7 @@
     "defu": "^6.1.2",
     "dexie": "^3.2.3",
     "html2canvas": "^1.4.1",
+    "i18next": "^23.7.6",
     "idb": "^7.0.2",
     "js-base64": "^3.7.5",
     "json5": "^2.2.3",
@@ -93,6 +89,10 @@
     "prosemirror-history": "^1.3.0",
     "prosemirror-keymap": "^1.2.0",
     "prosemirror-schema-list": "^1.2.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-i18next": "^14.0.1",
+    "react-router-dom": "^6.21.1",
     "rxjs": "^7.8.0",
     "sizzle": "^2.3.8",
     "tippy.js": "^6.3.1",
@@ -106,7 +106,8 @@
     "vuedraggable": "^4.1.0",
     "vuex": "^4.0.2",
     "webextension-polyfill": "^0.12.0",
-    "xlsx": "^0.18.5"
+    "xlsx": "^0.18.5",
+    "zustand": "^4.4.7"
   },
   "devDependencies": {
     "@babel/core": "^7.20.7",
@@ -114,13 +115,15 @@
     "@babel/preset-env": "^7.20.2",
     "@babel/preset-react": "^7.23.3",
     "@babel/preset-typescript": "^7.23.3",
-    "@types/react": "^18.2.47",
-    "@types/react-dom": "^18.2.18",
-    "ts-loader": "^9.5.1",
-    "typescript": "^5.3.3",
     "@intlify/vue-i18n-loader": "^4.2.0",
     "@tailwindcss/typography": "^0.5.1",
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
     "@types/chrome": "^0.0.267",
+    "@types/react": "^18.2.47",
+    "@types/react-dom": "^18.2.18",
+    "@vitejs/plugin-react": "^6.0.1",
     "@vue/compiler-sfc": "^3.3.4",
     "archiver": "^5.3.1",
     "autoprefixer": "^10.4.12",
@@ -142,6 +145,7 @@
     "fs-extra": "^11.1.0",
     "html-loader": "^4.2.0",
     "html-webpack-plugin": "^5.5.0",
+    "jsdom": "^29.0.1",
     "lint-staged": "^13.0.2",
     "mini-css-extract-plugin": "^2.3.0",
     "postcss": "^8.4.21",
@@ -151,6 +155,9 @@
     "source-map-loader": "^4.0.0",
     "tailwindcss": "^3.2.1",
     "terser-webpack-plugin": "^5.3.6",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.3.3",
+    "vitest": "^4.1.2",
     "vue-loader": "^17.2.2",
     "web-worker": "^1.2.0",
     "webpack": "5.76.0",

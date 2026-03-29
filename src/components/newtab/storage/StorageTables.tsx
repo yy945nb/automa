@@ -1,55 +1,49 @@
-import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import dayjs from 'dayjs';
-import { useDialog } from '@/composable/dialog';
-import { useWorkflowStore } from '@/stores/workflow';
-import { useLiveQuery } from '@/composable/liveQuery';
-import dbStorage from '@/db/storage';
-import StorageEditTable from './StorageEditTable.tsx';
+import { Link } from 'react-router-dom';
+import UiInput from '@/components/ui/UiInput';
+import UiButton from '@/components/ui/UiButton';
+import UiTable from '@/components/ui/UiTable';
 
-interface StorageTablesProps {
-  children?: React.ReactNode;
-  [key: string]: any;
+interface StorageTable {
+  id: string;
+  name: string;
+  rowsCount?: number;
+  createdAt?: number;
 }
 
-export default function StorageTables({ children, ...props }: StorageTablesProps) {
+export default function StorageTables() {
   const { t } = useTranslation();
-  // TODO: Convert Pinia stores, Vue Router, and other Vue-specific logic to React equivalents
+  const [query, setQuery] = useState('');
+  const [items, setItems] = useState<StorageTable[]>([]);
+
+  const tableHeaders = [
+    { text: t('common.name'), value: 'name' },
+    { text: 'Rows', value: 'rowsCount' },
+    { text: 'Actions', value: 'actions' },
+  ];
+
   return (
-    <div className="storagetables-wrapper">
-      {/* Converted from Vue SFC - template below */}
+    <div className="mt-4">
       <div className="mt-6 flex">
-          <ui-input
-            value={state.query} onChange={(e: any) => { /* TODO update state.query */ }}
-            placeholder={t('common.search')}
-            prepend-icon="riSearch2Line"
-          />
-          <div className="grow"></div>
-          <ui-button
-            variant="accent"
-            className="ml-4"
-            style="min-width: 120px"
-            onClick={state.showAddTable = true}
-          >
-            {t('storage.table.add')}
-          </ui-button>
-        </div>
-        <div className="scroll w-full overflow-x-auto">
-          <ui-table
-            item-key="id"
-            headers={tableHeaders}
-            items={items}
-            search={state.query}
-            className="mt-4 w-full"
-          >
-            <template #item-name="{ item }">
-              <a
-                to={`/storage/tables/${item.id}`}
-                className="block w-full"
-                style="min-height: 29px"
-              >
-                {item.name}
-              </a>
+        <UiInput
+          modelValue={query}
+          onChange={(val) => setQuery(String(val))}
+          placeholder={t('common.search')}
+          prependIcon="riSearch2Line"
+        />
+        <div className="grow" />
+        <UiButton variant="accent" className="ml-4">
+          {t('storage.table.add')}
+        </UiButton>
+      </div>
+      <div className="scroll w-full overflow-x-auto">
+        <UiTable
+          headers={tableHeaders}
+          items={items}
+          className="mt-4 w-full"
+        />
+      </div>
     </div>
   );
 }
