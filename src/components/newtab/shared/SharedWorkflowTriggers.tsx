@@ -2,14 +2,14 @@ import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react'
 import { useTranslation } from 'react-i18next';
 import { nanoid } from 'nanoid/non-secure';
 import cloneDeep from 'lodash.clonedeep';
-import TriggerDate from '../workflow/edit/Trigger/TriggerDate.vue';
-import TriggerCronJob from '../workflow/edit/Trigger/TriggerCronJob.vue';
-import TriggerInterval from '../workflow/edit/Trigger/TriggerInterval.vue';
-import TriggerVisitWeb from '../workflow/edit/Trigger/TriggerVisitWeb.vue';
-import TriggerContextMenu from '../workflow/edit/Trigger/TriggerContextMenu.vue';
-import TriggerSpecificDay from '../workflow/edit/Trigger/TriggerSpecificDay.vue';
-import TriggerElementChange from '../workflow/edit/Trigger/TriggerElementChange.vue';
-import TriggerKeyboardShortcut from '../workflow/edit/Trigger/TriggerKeyboardShortcut.vue';
+import TriggerDate from '../workflow/edit/Trigger/TriggerDate.tsx';
+import TriggerCronJob from '../workflow/edit/Trigger/TriggerCronJob.tsx';
+import TriggerInterval from '../workflow/edit/Trigger/TriggerInterval.tsx';
+import TriggerVisitWeb from '../workflow/edit/Trigger/TriggerVisitWeb.tsx';
+import TriggerContextMenu from '../workflow/edit/Trigger/TriggerContextMenu.tsx';
+import TriggerSpecificDay from '../workflow/edit/Trigger/TriggerSpecificDay.tsx';
+import TriggerElementChange from '../workflow/edit/Trigger/TriggerElementChange.tsx';
+import TriggerKeyboardShortcut from '../workflow/edit/Trigger/TriggerKeyboardShortcut.tsx';
 
 interface SharedWorkflowTriggersProps {
   children?: React.ReactNode;

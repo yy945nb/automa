@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react'
 import { useTranslation } from 'react-i18next';
 import { nanoid } from 'nanoid';
 import cloneDeep from 'lodash.clonedeep';
-import EventCodeHTTP from './event/EventCodeHTTP.vue';
-import EventCodeAction from './event/EventCodeAction.vue';
+import EventCodeHTTP from './event/EventCodeHTTP.tsx';
+import EventCodeAction from './event/EventCodeAction.tsx';
 
 interface SettingsEventsProps {
   children?: React.ReactNode;

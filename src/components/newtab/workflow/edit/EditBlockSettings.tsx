@@ -2,9 +2,9 @@ import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react'
 import { useTranslation } from 'react-i18next';
 import defu from 'defu';
 import { excludeOnError } from '@/utils/shared';
-import BlockSettingLines from './BlockSetting/BlockSettingLines.vue';
-import BlockSettingOnError from './BlockSetting/BlockSettingOnError.vue';
-import BlockSettingGeneral from './BlockSetting/BlockSettingGeneral.vue';
+import BlockSettingLines from './BlockSetting/BlockSettingLines.tsx';
+import BlockSettingOnError from './BlockSetting/BlockSettingOnError.tsx';
+import BlockSettingGeneral from './BlockSetting/BlockSettingGeneral.tsx';
 
 interface EditBlockSettingsProps {
   children?: React.ReactNode;

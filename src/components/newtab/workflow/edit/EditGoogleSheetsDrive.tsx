@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react'
 import { useTranslation } from 'react-i18next';
 import { useStore } from '@/stores/main';
 import { openGDrivePickerPopup } from '@/utils/openGDriveFilePicker';
-import EditGoogleSheets from './EditGoogleSheets.vue';
+import EditGoogleSheets from './EditGoogleSheets.tsx';
 
 interface EditGoogleSheetsDriveProps {
   children?: React.ReactNode;

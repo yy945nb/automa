@@ -1,16 +1,16 @@
 import VAutofocus from '@/directives/VAutofocus';
-import UiTab from '@/components/ui/UiTab.vue';
-import UiTabs from '@/components/ui/UiTabs.vue';
-import UiInput from '@/components/ui/UiInput.vue';
-import UiButton from '@/components/ui/UiButton.vue';
-import UiSelect from '@/components/ui/UiSelect.vue';
-import UiExpand from '@/components/ui/UiExpand.vue';
-import UiSwitch from '@/components/ui/UiSwitch.vue';
-import UiTextarea from '@/components/ui/UiTextarea.vue';
-import UiCheckbox from '@/components/ui/UiCheckbox.vue';
-import UiTabPanel from '@/components/ui/UiTabPanel.vue';
-import UiTabPanels from '@/components/ui/UiTabPanels.vue';
-import TransitionExpand from '@/components/transitions/TransitionExpand.vue';
+import UiTab from '@/components/ui/UiTab.tsx';
+import UiTabs from '@/components/ui/UiTabs.tsx';
+import UiInput from '@/components/ui/UiInput.tsx';
+import UiButton from '@/components/ui/UiButton.tsx';
+import UiSelect from '@/components/ui/UiSelect.tsx';
+import UiExpand from '@/components/ui/UiExpand.tsx';
+import UiSwitch from '@/components/ui/UiSwitch.tsx';
+import UiTextarea from '@/components/ui/UiTextarea.tsx';
+import UiCheckbox from '@/components/ui/UiCheckbox.tsx';
+import UiTabPanel from '@/components/ui/UiTabPanel.tsx';
+import UiTabPanels from '@/components/ui/UiTabPanels.tsx';
+import TransitionExpand from '@/components/transitions/TransitionExpand.tsx';
 
 export default function (app) {
   app.component('UiTab', UiTab);

@@ -2,10 +2,10 @@ import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react'
 import { useTranslation } from 'react-i18next';
 import cloneDeep from 'lodash.clonedeep';
 import { nanoid } from 'nanoid/non-secure';
-import ParameterCheckboxValue from './Parameter/ParameterCheckboxValue.vue';
-import ParameterInputOptions from './Parameter/ParameterInputOptions.vue';
-import ParameterInputValue from './Parameter/ParameterInputValue.vue';
-import ParameterJsonValue from './Parameter/ParameterJsonValue.vue';
+import ParameterCheckboxValue from './Parameter/ParameterCheckboxValue.tsx';
+import ParameterInputOptions from './Parameter/ParameterInputOptions.tsx';
+import ParameterInputValue from './Parameter/ParameterInputValue.tsx';
+import ParameterJsonValue from './Parameter/ParameterJsonValue.tsx';
 
 interface EditWorkflowParametersProps {
   children?: React.ReactNode;

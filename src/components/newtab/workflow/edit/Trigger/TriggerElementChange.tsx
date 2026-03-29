@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import cloneDeep from 'lodash.clonedeep';
-import TriggerElementOptions from './TriggerElementOptions.vue';
+import TriggerElementOptions from './TriggerElementOptions.tsx';
 
 interface TriggerElementChangeProps {
   children?: React.ReactNode;

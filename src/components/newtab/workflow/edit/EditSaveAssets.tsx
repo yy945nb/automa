@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHasPermissions } from '@/composable/hasPermissions';
-import EditInteractionBase from './EditInteractionBase.vue';
-import EditAutocomplete from './EditAutocomplete.vue';
-import InsertWorkflowData from './InsertWorkflowData.vue';
+import EditInteractionBase from './EditInteractionBase.tsx';
+import EditAutocomplete from './EditAutocomplete.tsx';
+import InsertWorkflowData from './InsertWorkflowData.tsx';
 
 interface EditSaveAssetsProps {
   children?: React.ReactNode;

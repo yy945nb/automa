@@ -1,0 +1,67 @@
+
+name: CI
+uses: actions/attest-build-provenance@v4.1.0
+
+on:
+  pull_request:
+    branches: [ "dev" ]
+
+jobs:
+  lint_and_build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@4
+        with:
+          version: 9
+
+      - name: Setup Node
+        uses: actions/setup-node@4
+        with:
+          node-version: "20"
+          cache: "pnpm"
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Provide getPassKey.js for CI
+        run: |
+          cat > src/utils/getPassKey.js << 'EOF'
+          export default function getPassKey() {
+            return 'ci-passkey';
+          }
+          EOF
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Test
+        run: pnpm test
+
+      - name: Build (Chrome)
+        run: pnpm build
+
+      - name: Upload artifact (Chrome build/)
+        uses: actions/upload-artifact@4
+        with:
+          name: automa-build-chrome
+          path: build/
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Build (Firefox)
+        run: pnpm build:firefox
+
+      - name: Upload artifact (Firefox build/)
+        uses: actions/upload-artifact@4
+        with:
+          name: automa-build-firefox
+          path: build/
+          if-no-files-found: error
+          retention-days: 7

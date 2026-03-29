@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHasPermissions } from '@/composable/hasPermissions';
-import EditAutocomplete from './EditAutocomplete.vue';
+import EditAutocomplete from './EditAutocomplete.tsx';
 
 interface EditNotificationProps {
   children?: React.ReactNode;

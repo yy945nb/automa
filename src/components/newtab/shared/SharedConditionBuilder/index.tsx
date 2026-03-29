@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { nanoid } from 'nanoid';
 import cloneDeep from 'lodash.clonedeep';
 import { conditionBuilder } from '@/utils/shared';
-import ConditionBuilderInputs from './ConditionBuilderInputs.vue';
+import ConditionBuilderInputs from './ConditionBuilderInputs.tsx';
 
 interface indexProps {
   children?: React.ReactNode;

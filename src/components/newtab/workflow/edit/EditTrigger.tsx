@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { nanoid } from 'nanoid/non-secure';
-import SharedWorkflowTriggers from '@/components/newtab/shared/SharedWorkflowTriggers.vue';
-import EditWorkflowParameters from './EditWorkflowParameters.vue';
+import SharedWorkflowTriggers from '@/components/newtab/shared/SharedWorkflowTriggers.tsx';
+import EditWorkflowParameters from './EditWorkflowParameters.tsx';
 
 interface EditTriggerProps {
   children?: React.ReactNode;

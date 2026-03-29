@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useShortcut } from '@/composable/shortcut';
 import { categories } from '@/utils/shared';
 import { getBlocks } from '@/utils/getSharedData';
-import WorkflowBlockList from './WorkflowBlockList.vue';
+import WorkflowBlockList from './WorkflowBlockList.tsx';
 
 interface WorkflowDetailsCardProps {
   children?: React.ReactNode;

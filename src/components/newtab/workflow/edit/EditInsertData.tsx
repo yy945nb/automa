@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import getFile, { readFileAsBase64 } from '@/utils/getFile';
-import EditAutocomplete from './EditAutocomplete.vue';
+import EditAutocomplete from './EditAutocomplete.tsx';
 
 interface EditInsertDataProps {
   children?: React.ReactNode;

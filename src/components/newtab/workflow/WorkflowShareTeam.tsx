@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import SharedWysiwyg from '@/components/newtab/shared/SharedWysiwyg.vue';
+import SharedWysiwyg from '@/components/newtab/shared/SharedWysiwyg.tsx';
 import { useTeamWorkflowStore } from '@/stores/teamWorkflow';
 import { useUserStore } from '@/stores/user';
 import { fetchApi } from '@/utils/api';

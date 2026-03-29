@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import InsertWorkflowData from './InsertWorkflowData.vue';
-import EditInteractionBase from './EditInteractionBase.vue';
-import EditAutocomplete from './EditAutocomplete.vue';
+import InsertWorkflowData from './InsertWorkflowData.tsx';
+import EditInteractionBase from './EditInteractionBase.tsx';
+import EditAutocomplete from './EditAutocomplete.tsx';
 
 interface EditFormsProps {
   children?: React.ReactNode;
