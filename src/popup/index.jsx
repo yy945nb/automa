@@ -5,6 +5,7 @@ import App from './App';
 import '../assets/css/tailwind.css';
 import '../assets/css/fonts.css';
 import '../assets/css/flow.css';
+import './popup.css';
 
 const container = document.getElementById('app');
 const root = createRoot(container);
