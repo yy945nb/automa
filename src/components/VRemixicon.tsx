@@ -28,7 +28,7 @@ export default function VRemixicon({
     if (pathProp) return pathProp;
     const iconStr = iconMap[name];
     if (typeof iconStr === 'undefined') {
-      console.error(`[VRemixicon] ${name} name of the icon is incorrect`);
+      console.error(`[VRemixicon] Icon name '${name}' not found in icon library. Please verify the icon name is correct.`);
       return null;
     }
     return iconStr;

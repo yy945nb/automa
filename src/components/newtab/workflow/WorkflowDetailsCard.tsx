@@ -141,7 +141,6 @@ export default function WorkflowDetailsCard({
 
   // Bind keyboard shortcut for search
   useEffect(() => {
-    Mousetrap.prototype.stopCallback = () => false;
     const combo = shortcutData.combo;
     const handler = (event: Event) => {
       event.preventDefault();
