@@ -13,7 +13,7 @@
     },
     "allowJs": true,
     "checkJs": false,
-    "strict": false,
+    "strict": true,
     "noEmit": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
@@ -23,6 +23,6 @@
     "forceConsistentCasingInFileNames": true,
     "types": ["chrome"]
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "src/agent/**/*"],
   "exclude": ["node_modules", "build"]
 }

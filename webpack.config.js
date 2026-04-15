@@ -70,6 +70,7 @@ const options = {
       'elementSelector',
       'index.js'
     ),
+    agentBridge: path.join(__dirname, 'src', 'agent', 'index.ts'),
   },
   chromeExtensionBoilerplate: {
     notHotReload: [
@@ -138,6 +139,13 @@ const options = {
         use: [
           {
             loader: 'babel-loader',
+            options: {
+              presets: [
+                '@babel/preset-env',
+                ['@babel/preset-react', { runtime: 'automatic' }],
+                '@babel/preset-typescript',
+              ],
+            },
           },
           {
             loader: 'ts-loader',
