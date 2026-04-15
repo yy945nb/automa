@@ -15,6 +15,7 @@ const alias = {
   '@': path.resolve(__dirname, 'src/'),
   secrets: path.join(__dirname, 'secrets.blank.js'),
   '@business': path.resolve(__dirname, 'business/dev'),
+  'react-toastification': path.resolve(__dirname, 'src/lib/react-toastification.ts'),
 };
 
 // load the secrets
@@ -72,15 +73,8 @@ const options = {
     ),
     agentBridge: path.join(__dirname, 'src', 'agent', 'index.ts'),
   },
-  chromeExtensionBoilerplate: {
-    notHotReload: [
-      'background',
-      'webService',
-      'contentScript',
-      'recordWorkflow',
-      'elementSelector',
-    ],
-  },
+  // chromeExtensionBoilerplate moved out of webpack config (not a valid webpack property)
+  // notHotReload: ['background', 'webService', 'contentScript', 'recordWorkflow', 'elementSelector']
   output: {
     path: path.resolve(__dirname, 'build'),
     filename: '[name].bundle.js',

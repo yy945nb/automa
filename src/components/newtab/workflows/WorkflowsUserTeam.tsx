@@ -1,36 +1,69 @@
-import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import SharedCard from '@/components/newtab/shared/SharedCard.vue';
-import { useDialog } from '@/composable/dialog';
-import RendererWorkflowService from '@/service/renderer/RendererWorkflowService';
-import { useTeamWorkflowStore } from '@/stores/teamWorkflow';
-import { useUserStore } from '@/stores/user';
-import { fetchApi } from '@/utils/api';
-import { arraySorter } from '@/utils/helper';
-import { tagColors } from '@/utils/shared';
+import { Link } from 'react-router-dom';
 
-interface WorkflowsUserTeamProps {
-  children?: React.ReactNode;
-  [key: string]: any;
+interface TeamWorkflow {
+  id: string;
+  name: string;
+  description?: string;
+  tag?: string;
+  tagColor?: string;
 }
 
-export default function WorkflowsUserTeam({ children, ...props }: WorkflowsUserTeamProps) {
+interface WorkflowsUserTeamProps {
+  active?: boolean;
+  teamId?: string;
+  search?: string;
+  sort?: { by: string; order: 'asc' | 'desc' };
+}
+
+export default function WorkflowsUserTeam({ active = false, teamId = '', search = '', sort }: WorkflowsUserTeamProps) {
   const { t } = useTranslation();
-  // TODO: Convert Pinia stores, Vue Router, and other Vue-specific logic to React equivalents
+
+  // TODO: Load from teamWorkflowStore.getByTeam(teamId), apply search/sort
+  const workflows: TeamWorkflow[] = [];
+
+  const filtered = useMemo(() => {
+    if (!search) return workflows;
+    const q = search.toLowerCase();
+    return workflows.filter(w => w.name.toLowerCase().includes(q));
+  }, [workflows, search]);
+
+  if (!active) return null;
+
+  if (filtered.length === 0) {
+    return (
+      <div className="py-12 text-center">
+        <p className="text-gray-500">{t('message.empty')}</p>
+        <p className="mt-2 text-sm text-gray-400">
+          <a href="https://extension.automa.site/auth" className="underline" target="_blank" rel="noreferrer">
+            Login
+          </a>{' '}
+          to access team workflows
+        </p>
+      </div>
+    );
+  }
+
   return (
-    <div className="workflowsuserteam-wrapper">
-      {/* Converted from Vue SFC - template below */}
-      <p {/* v-if: !userStore.user */} className="my-4 text-center">
-          <ui-spinner {/* v-if: !userStore.retrieved */} color="text-accent" />
-          <template {/* v-else */}>
-            You must
-            <a
-              href="https://extension.automa.site/auth"
-              className="underline"
-              target="_blank"
-              >login</a
-            >
-            to use these workflows
+    <div className="workflows-container grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+      {filtered.map((workflow) => (
+        <Link
+          key={workflow.id}
+          to={`/workflows/${workflow.id}`}
+          className="block rounded-lg border bg-white p-4 transition hover:shadow dark:bg-gray-800"
+        >
+          <div className="flex items-center">
+            <p className="flex-1 font-semibold">{workflow.name}</p>
+            {workflow.tag && (
+              <span className="rounded-full px-2 py-0.5 text-xs" style={{ backgroundColor: workflow.tagColor || '#e5e7eb' }}>
+                {workflow.tag}
+              </span>
+            )}
+          </div>
+          {workflow.description && <p className="mt-1 text-sm text-gray-500">{workflow.description}</p>}
+        </Link>
+      ))}
     </div>
   );
 }

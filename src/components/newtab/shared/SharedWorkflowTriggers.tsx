@@ -1,40 +1,53 @@
-import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { nanoid } from 'nanoid/non-secure';
-import cloneDeep from 'lodash.clonedeep';
-import TriggerDate from '../workflow/edit/Trigger/TriggerDate.vue';
-import TriggerCronJob from '../workflow/edit/Trigger/TriggerCronJob.vue';
-import TriggerInterval from '../workflow/edit/Trigger/TriggerInterval.vue';
-import TriggerVisitWeb from '../workflow/edit/Trigger/TriggerVisitWeb.vue';
-import TriggerContextMenu from '../workflow/edit/Trigger/TriggerContextMenu.vue';
-import TriggerSpecificDay from '../workflow/edit/Trigger/TriggerSpecificDay.vue';
-import TriggerElementChange from '../workflow/edit/Trigger/TriggerElementChange.vue';
-import TriggerKeyboardShortcut from '../workflow/edit/Trigger/TriggerKeyboardShortcut.vue';
 
-interface SharedWorkflowTriggersProps {
-  children?: React.ReactNode;
-  [key: string]: any;
+interface TriggerItem {
+  id: string;
+  type: string;
+  data: Record<string, any>;
 }
 
-export default function SharedWorkflowTriggers({ children, ...props }: SharedWorkflowTriggersProps) {
+interface SharedWorkflowTriggersProps {
+  triggers?: TriggerItem[];
+  disabled?: boolean;
+  onChange?: (triggers: TriggerItem[]) => void;
+}
+
+export default function SharedWorkflowTriggers({ triggers = [], disabled = false, onChange }: SharedWorkflowTriggersProps) {
   const { t } = useTranslation();
-  // TODO: Convert Pinia stores, Vue Router, and other Vue-specific logic to React equivalents
+  const [triggersList, setTriggersList] = useState<TriggerItem[]>(triggers);
+
+  // TODO: Full implementation — render trigger type-specific editors (Date, CronJob, Interval, VisitWeb, etc.)
   return (
-    <div className="sharedworkflowtriggers-wrapper">
-      {/* Converted from Vue SFC - template below */}
-      <div
-          className="scroll overflow-auto"
-          style="min-height: 350px; max-height: calc(100vh - 14rem)"
-        >
-          <ui-expand
-            /* v-for: (trigger, index) in triggersList */ key={index}
-            className="trigger-item mb-2 rounded-lg border"
-          >
-            <template #header>
+    <div className="scroll overflow-auto" style={{ minHeight: 350, maxHeight: 'calc(100vh - 14rem)' }}>
+      {triggersList.length === 0 ? (
+        <p className="py-8 text-center text-gray-500">{t('message.noData')}</p>
+      ) : (
+        triggersList.map((trigger, index) => (
+          <div key={trigger.id || index} className="trigger-item mb-2 rounded-lg border p-4">
+            <div className="flex items-center">
               <p className="flex-1">
-                {t(`workflow.blocks.trigger.items.${trigger.type}`)}
+                {t(`workflow.blocks.trigger.items.${trigger.type}`, trigger.type)}
               </p>
-              <i className={"ri-icon"} />
+              {!disabled && (
+                <button
+                  className="ml-2 text-red-500 hover:text-red-700"
+                  onClick={() => {
+                    const next = triggersList.filter((_, i) => i !== index);
+                    setTriggersList(next);
+                    onChange?.(next);
+                  }}
+                >
+                  ✕
+                </button>
+              )}
+            </div>
+            <pre className="mt-2 rounded bg-gray-100 p-2 text-xs dark:bg-gray-700">
+              {JSON.stringify(trigger.data, null, 2)}
+            </pre>
+          </div>
+        ))
+      )}
     </div>
   );
 }
