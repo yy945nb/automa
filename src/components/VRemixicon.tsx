@@ -1,43 +1,40 @@
 import React from 'react';
-
-// Re-export icon data from vRemixicon.js icons map
-// This is a React wrapper for the Vue v-remixicon component
 import { icons } from '@/lib/vRemixicon';
 
 interface VRemixiconProps {
-  name: string;
-  size?: string | number;
-  fill?: string;
-  viewBox?: string;
-  rotate?: number;
+  name?: string;
   title?: string;
+  viewBox?: string;
+  size?: number | string;
+  fill?: string;
+  rotate?: number | string;
+  path?: string;
   className?: string;
-  style?: React.CSSProperties;
-  onClick?: (e: React.MouseEvent) => void;
 }
 
-const VRemixicon: React.FC<VRemixiconProps> = ({
-  name,
+const iconMap = icons as Record<string, string>;
+
+export default function VRemixicon({
+  name = '',
+  title,
+  viewBox = '0 0 24 24',
   size = 24,
   fill = 'currentColor',
-  viewBox = '0 0 24 24',
-  rotate,
-  title,
+  rotate = 0,
+  path: pathProp = '',
   className = '',
-  style,
-  onClick,
-}) => {
-  const iconPath = (icons as Record<string, string>)[name];
+}: VRemixiconProps) {
+  const iconPath = (() => {
+    if (pathProp) return pathProp;
+    const iconStr = iconMap[name];
+    if (typeof iconStr === 'undefined') {
+      console.error(`[VRemixicon] Icon name '${name}' not found in icon library. Please verify the icon name is correct.`);
+      return null;
+    }
+    return iconStr;
+  })();
 
-  if (!iconPath) {
-    console.warn(`[VRemixicon] "${name}" icon not found`);
-    return null;
-  }
-
-  const combinedStyle: React.CSSProperties = {
-    ...style,
-    ...(rotate ? { transform: `rotate(${rotate}deg)` } : {}),
-  };
+  if (!iconPath) return null;
 
   return (
     <svg
@@ -45,10 +42,9 @@ const VRemixicon: React.FC<VRemixiconProps> = ({
       fill={fill}
       height={size}
       width={size}
-      className={`v-remixicon ${className}`}
+      className={`v-remixicon ${className}`.trim()}
       xmlns="http://www.w3.org/2000/svg"
-      style={combinedStyle}
-      onClick={onClick}
+      style={rotate ? { transform: `rotate(${rotate}deg)` } : undefined}
     >
       {title && <title>{title}</title>}
       <g>
@@ -57,6 +53,4 @@ const VRemixicon: React.FC<VRemixiconProps> = ({
       </g>
     </svg>
   );
-};
-
-export default VRemixicon;
+}

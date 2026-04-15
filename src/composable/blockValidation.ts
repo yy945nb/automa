@@ -1,40 +1,19 @@
-import { onMounted, watch, shallowRef } from 'vue';
+import { useRef, useEffect, useState } from 'react';
 import blocksValidation from '@/newtab/utils/blocksValidation';
 
-export function useBlockValidation(blockId, data) {
-  const errors = shallowRef('');
+export function useBlockValidation(nodes: any[], edges: any[]) {
+  const [errors, setErrors] = useState<Record<string, any>>({});
+  const prevRef = useRef<string>('');
 
-  onMounted(() => {
-    const blockValidation = blocksValidation[blockId];
-    if (!blockValidation) return;
+  useEffect(() => {
+    const key = JSON.stringify({ nodes, edges });
+    if (key === prevRef.current) return;
+    prevRef.current = key;
+    try {
+      const result = blocksValidation(nodes, edges);
+      setErrors(result || {});
+    } catch { /* ignore */ }
+  }, [nodes, edges]);
 
-    const unwatch = watch(
-      data,
-      (newData) => {
-        blockValidation
-          .func(newData)
-          .then((blockErrors) => {
-            let errorsStr = '';
-            blockErrors.forEach((error) => {
-              errorsStr += `<li>${error}</li>\n`;
-            });
-
-            errors.value =
-              errorsStr.trim() &&
-              `Issues: <ol class='list-disc list-inside'>${errorsStr}</ol>`;
-          })
-          .catch((error) => {
-            console.error(error);
-          })
-          .finally(() => {
-            if (blockValidation.once) {
-              unwatch();
-            }
-          });
-      },
-      { deep: true, immediate: true }
-    );
-  });
-
-  return { errors };
+  return errors;
 }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import WorkflowShareTeam from '@/components/newtab/workflow/WorkflowShareTeam.vue';
+import WorkflowShareTeam from '@/components/newtab/workflow/WorkflowShareTeam';
 import { useDialog } from '@/composable/dialog';
 import { useGroupTooltip } from '@/composable/groupTooltip';
 import { getShortcut, useShortcut } from '@/composable/shortcut';

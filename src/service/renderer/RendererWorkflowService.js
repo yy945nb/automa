@@ -1,5 +1,9 @@
 import { MessageListener } from '@/utils/message';
-import { toRaw } from 'vue';
+
+// toRaw removed — no longer using Vue reactivity proxies
+function toPlainObject(obj) {
+  return JSON.parse(JSON.stringify(obj));
+}
 
 class RendererWorkflowService {
   static executeWorkflow(workflowData, options) {
@@ -9,7 +13,7 @@ class RendererWorkflowService {
      */
     const clonedWorkflowData = {};
     Object.keys(workflowData).forEach((key) => {
-      clonedWorkflowData[key] = toRaw(workflowData[key]);
+      clonedWorkflowData[key] = toPlainObject(workflowData[key]);
     });
 
     return MessageListener.sendMessage(

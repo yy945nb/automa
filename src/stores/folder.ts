@@ -1,50 +1,19 @@
-import { defineStore } from 'pinia';
-import { nanoid } from 'nanoid';
-import browser from 'webextension-polyfill';
+import { create } from 'zustand';
 
-export const useFolderStore = defineStore('folder', {
-  storageMap: {
-    items: 'folders',
-  },
-  state: () => ({
-    items: [],
-    retrieved: false,
-  }),
-  actions: {
-    async addFolder(name) {
-      this.items.push({
-        name,
-        id: nanoid(),
-      });
+interface FolderState {
+  folders: any[];
+  loadData: () => Promise<void>;
+  insert: (data: any) => Promise<any>;
+  update: (data: any) => Promise<void>;
+  delete: (id: string) => Promise<void>;
+}
 
-      await this.saveToStorage('items');
+export const useFolderStore = create<FolderState>((set) => ({
+  folders: [],
+  loadData: async () => { /* TODO */ },
+  insert: async (data: any) => data,
+  update: async (data: any) => { /* TODO */ },
+  delete: async (id: string) => { /* TODO */ },
+}));
 
-      return this.items.at(-1);
-    },
-    async deleteFolder(id) {
-      const index = this.items.findIndex((folder) => folder.id === id);
-      if (index === -1) return null;
-
-      this.items.splice(index, 1);
-      await this.saveToStorage('items');
-
-      return index;
-    },
-    async updateFolder(id, data = {}) {
-      const index = this.items.findIndex((folder) => folder.id === id);
-      if (index === -1) return null;
-
-      Object.assign(this.items[index], data);
-      await this.saveToStorage('items');
-
-      return this.items[index];
-    },
-    load() {
-      return browser.storage.local.get('folders').then(({ folders }) => {
-        this.items = folders || [];
-        this.retrieved = true;
-        return folders;
-      });
-    },
-  },
-});
+export default useFolderStore;

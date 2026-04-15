@@ -1,18 +1,29 @@
-import { createPinia } from 'pinia';
+// Pinia removed — stores now use Zustand directly
+// This file kept for backward compatibility of imports
 import browser from 'webextension-polyfill';
 
-function saveToStoragePlugin({ store, options }) {
-  store.saveToStorage = (key) => {
-    const storageKey = options.storageMap[key];
-    if (!storageKey || !store.retrieved) return null;
-
-    const value = JSON.parse(JSON.stringify(store[key]));
-
-    return browser.storage.local.set({ [storageKey]: value });
-  };
+// Storage sync utility (extracted from Pinia plugin)
+export async function saveToStorage(key: string, value: any) {
+  try {
+    await browser.storage.local.set({ [key]: JSON.stringify(value) });
+  } catch (e) {
+    console.warn('saveToStorage failed:', key, e);
+  }
 }
 
-const pinia = createPinia();
-pinia.use(saveToStoragePlugin);
+export async function loadFromStorage(key: string) {
+  try {
+    const result = await browser.storage.local.get(key);
+    return result[key] ? JSON.parse(result[key]) : null;
+  } catch (e) {
+    console.warn('loadFromStorage failed:', key, e);
+    return null;
+  }
+}
 
-export default pinia;
+// No-op createPinia replacement
+export function createPinia() {
+  return {};
+}
+
+export default { saveToStorage, loadFromStorage };

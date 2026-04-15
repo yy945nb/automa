@@ -1,22 +1,14 @@
-import { reactive, onMounted } from 'vue';
+import { useState, useEffect } from 'react';
 import { getBlocks } from '@/utils/getSharedData';
 import { categories } from '@/utils/shared';
 
-export function useEditorBlock(label) {
-  const blocks = getBlocks();
-  const block = reactive({
-    details: {},
-    category: {},
-  });
+export function useEditorBlock() {
+  const [blocks, setBlocks] = useState<Record<string, any>>({});
 
-  onMounted(() => {
-    if (!label) return;
+  useEffect(() => {
+    const loaded = getBlocks();
+    setBlocks(loaded || {});
+  }, []);
 
-    const details = blocks[label];
-
-    block.details = { id: label, ...details };
-    block.category = categories[details.category];
-  });
-
-  return block;
+  return { blocks, categories };
 }

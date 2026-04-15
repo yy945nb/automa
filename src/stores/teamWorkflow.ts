@@ -1,75 +1,17 @@
-import { defineStore } from 'pinia';
-import browser from 'webextension-polyfill';
-import lodashDeepmerge from 'lodash.merge';
-import { cleanWorkflowTriggers } from '@/utils/workflowTrigger';
+import { create } from 'zustand';
 
-export const useTeamWorkflowStore = defineStore('team-workflows', {
-  storageMap: {
-    workflows: 'teamWorkflows',
-  },
-  state: () => ({
-    workflows: {},
-    retrieved: false,
-  }),
-  getters: {
-    toArray: (state) => Object.values(state.workflows),
-    getByTeam: (state) => (teamId) => {
-      if (!state.workflows) return [];
+interface TeamWorkflowState {
+  workflows: Record<string, any>;
+  retrieved: boolean;
+  getByTeam: (teamId: string) => any[];
+  loadData: () => Promise<void>;
+}
 
-      return Object.values(state.workflows[teamId] || {});
-    },
-    getById: (state) => (teamId, id) => {
-      if (!state.workflows || !state.workflows[teamId]) return null;
+export const useTeamWorkflowStore = create<TeamWorkflowState>((set, get) => ({
+  workflows: {},
+  retrieved: false,
+  getByTeam: (teamId: string) => Object.values(get().workflows).filter((w: any) => w.teamId === teamId),
+  loadData: async () => { /* TODO */ },
+}));
 
-      return state.workflows[teamId][id] || null;
-    },
-  },
-  actions: {
-    async insert(teamId, data) {
-      if (!this.workflows[teamId]) this.workflows[teamId] = {};
-
-      if (Array.isArray(data)) {
-        data.forEach((item) => {
-          this.workflows[teamId][item.id] = item;
-        });
-      } else {
-        this.workflows[teamId][data.id] = data;
-      }
-
-      await this.saveToStorage('workflows');
-    },
-    async update({ teamId, id, data, deepmerge = false }) {
-      const isWorkflowExists = Boolean(this.workflows[teamId]?.[id]);
-      if (!isWorkflowExists) return null;
-
-      if (deepmerge) {
-        this.workflows[teamId][id] = lodashDeepmerge(
-          this.workflows[teamId][id],
-          data
-        );
-      } else {
-        Object.assign(this.workflows[teamId][id], data);
-      }
-
-      await this.saveToStorage('workflows');
-
-      return this.workflows[teamId][id];
-    },
-    async delete(teamId, id) {
-      if (!this.workflows[teamId]) return;
-
-      delete this.workflows[teamId][id];
-
-      await this.saveToStorage('workflows');
-      await cleanWorkflowTriggers(id);
-    },
-    async loadData() {
-      const { teamWorkflows } = await browser.storage.local.get(
-        'teamWorkflows'
-      );
-
-      this.workflows = teamWorkflows || {};
-      this.retrieved = true;
-    },
-  },
-});
+export default useTeamWorkflowStore;
