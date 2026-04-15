@@ -1,56 +1,40 @@
-import { nextTick } from 'vue';
-import { createI18n } from 'vue-i18n/dist/vue-i18n.esm-bundler';
+// Migrated from vue-i18n to react-i18next
+import i18next from 'i18next';
+import { initReactI18next } from 'react-i18next';
 import { supportLocales } from '@/utils/shared';
 import dayjs from './dayjs';
 
-const i18n = createI18n({
-  legacy: false,
-  fallbackLocale: 'en',
+// Initialize i18next (replaces vue-i18n)
+i18next.use(initReactI18next).init({
+  lng: 'en',
+  fallbackLng: 'en',
+  resources: {},
+  interpolation: { escapeValue: false },
 });
 
-export function setI18nLanguage(locale) {
-  i18n.global.locale.value = locale;
-
-  document.querySelector('html').setAttribute('lang', locale);
+export function setI18nLanguage(locale: string) {
+  i18next.changeLanguage(locale);
+  document.querySelector('html')?.setAttribute('lang', locale);
 }
 
-export async function loadLocaleMessages(locale, location) {
-  const isLocaleSupported = supportLocales.some(({ id }) => id === locale);
+export async function loadLocaleMessages(locale: string, location = 'newtab') {
+  const isLocaleSupported = supportLocales?.includes(locale);
+  if (!isLocaleSupported) return;
 
-  if (!isLocaleSupported) {
-    console.error(`${locale} locale is not supported`);
-
-    return null;
+  try {
+    const messages = await import(`@/locales/${location}/${locale}.json`);
+    i18next.addResourceBundle(locale, 'translation', messages.default || messages, true, true);
+    setI18nLanguage(locale);
+    dayjs.locale(locale);
+  } catch (e) {
+    console.warn(`Failed to load locale: ${locale}/${location}`, e);
   }
-
-  const importLocale = async (path, merge = false) => {
-    try {
-      const messages = await import(
-        /* webpackChunkName: "locales/locale-[request]" */ `../locales/${locale}/${path}`
-      );
-
-      if (merge) {
-        i18n.global.mergeLocaleMessage(locale, messages.default);
-      } else {
-        i18n.global.setLocaleMessage(locale, messages.default);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  if (locale !== 'en' && !i18n.global.availableLocales.includes('en')) {
-    await loadLocaleMessages('en', location);
-  }
-
-  dayjs.locale(locale);
-
-  await importLocale('common.json');
-  await importLocale('popup.json', true);
-  await importLocale(`${location}.json`, true);
-  await importLocale('blocks.json', true);
-
-  return nextTick();
 }
 
-export default i18n;
+// For backward compat with code doing `import vueI18n from '@/lib/vueI18n'`
+export default {
+  global: {
+    locale: { value: i18next.language || 'en' },
+    t: (key: string, ...args: any[]) => i18next.t(key, ...args),
+  },
+};

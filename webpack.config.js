@@ -2,7 +2,7 @@ const webpack = require('webpack');
 const path = require('path');
 const fileSystem = require('fs-extra');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const { VueLoaderPlugin } = require('vue-loader');
+// Vue removed — React-only build
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -15,6 +15,7 @@ const alias = {
   '@': path.resolve(__dirname, 'src/'),
   secrets: path.join(__dirname, 'secrets.blank.js'),
   '@business': path.resolve(__dirname, 'business/dev'),
+  'react-toastification': path.resolve(__dirname, 'src/lib/react-toastification.ts'),
 };
 
 // load the secrets
@@ -72,15 +73,8 @@ const options = {
     ),
     agentBridge: path.join(__dirname, 'src', 'agent', 'index.ts'),
   },
-  chromeExtensionBoilerplate: {
-    notHotReload: [
-      'background',
-      'webService',
-      'contentScript',
-      'recordWorkflow',
-      'elementSelector',
-    ],
-  },
+  // chromeExtensionBoilerplate moved out of webpack config (not a valid webpack property)
+  // notHotReload: ['background', 'webService', 'contentScript', 'recordWorkflow', 'elementSelector']
   output: {
     path: path.resolve(__dirname, 'build'),
     filename: '[name].bundle.js',
@@ -88,13 +82,7 @@ const options = {
   },
   module: {
     rules: [
-      {
-        test: /\.vue$/,
-        loader: 'vue-loader',
-        options: {
-          reactivityTransform: true,
-        },
-      },
+      // Vue loader removed — .vue files no longer used
       {
         test: /\.css$/,
         use: [
@@ -110,9 +98,10 @@ const options = {
       {
         test: /\.(json5?|ya?ml)$/, // target json, json5, yaml and yml files
         type: 'javascript/auto',
-        // Use `Rule.include` to specify the files of locale messages to be pre-compiled
         include: [path.resolve(__dirname, './src/locales')],
-        loader: '@intlify/vue-i18n-loader',
+        loader: 'yaml-loader',
+        // Exclude .json — webpack handles those natively
+        exclude: /\.json$/,
       },
       {
         test: new RegExp(`.(${fileExtensions.join('|')})$`),
@@ -151,8 +140,8 @@ const options = {
             loader: 'ts-loader',
             options: {
               transpileOnly: true,
-              // Allow <script lang="ts"> inside Vue SFCs during the migration period
-              appendTsSuffixTo: [/\.vue$/],
+              // Vue SFC suffix no longer needed
+              // appendTsSuffixTo removed
             },
           },
         ],
@@ -164,11 +153,11 @@ const options = {
     alias,
     extensions: fileExtensions
       .map((extension) => `.${extension}`)
-      .concat(['.ts', '.tsx', '.js', '.vue', '.css']),
+      .concat(['.ts', '.tsx', '.js', '.css']),
   },
   plugins: [
     new MiniCssExtractPlugin(),
-    new VueLoaderPlugin(),
+    // VueLoaderPlugin removed — React-only build
     new webpack.DefinePlugin({
       BROWSER_TYPE: JSON.stringify(env.BROWSER),
     }),
@@ -259,16 +248,7 @@ const options = {
       chunks: ['offscreen'],
       cache: false,
     }),
-    new webpack.DefinePlugin({
-      __VUE_OPTIONS_API__: true,
-      __VUE_PROD_DEVTOOLS__: false,
-    }),
-    // Fix i18n warning
-    new webpack.DefinePlugin({
-      __VUE_I18N_FULL_INSTALL__: JSON.stringify(true),
-      __INTLIFY_PROD_DEVTOOLS__: JSON.stringify(false),
-      __VUE_I18N_LEGACY_API__: JSON.stringify(false),
-    }),
+    // Vue defines removed — no longer needed
   ],
   infrastructureLogging: {
     level: 'info',

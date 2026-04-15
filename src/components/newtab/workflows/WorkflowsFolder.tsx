@@ -1,63 +1,65 @@
-import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDialog } from '@/composable/dialog';
-import { parseJSON } from '@/utils/helper';
-import { useFolderStore } from '@/stores/folder';
-import { useWorkflowStore } from '@/stores/workflow';
-import { exportWorkflow } from '@/utils/workflowData';
 
-interface WorkflowsFolderProps {
-  children?: React.ReactNode;
-  [key: string]: any;
+interface Folder {
+  id: string;
+  name: string;
 }
 
-export default function WorkflowsFolder({ children, ...props }: WorkflowsFolderProps) {
+interface WorkflowsFolderProps {
+  value?: string;
+  onChange?: (folderId: string) => void;
+}
+
+export default function WorkflowsFolder({ value = '', onChange }: WorkflowsFolderProps) {
   const { t } = useTranslation();
-  // TODO: Convert Pinia stores, Vue Router, and other Vue-specific logic to React equivalents
+  const [folders, setFolders] = useState<Folder[]>([]);
+
+  useEffect(() => {
+    // TODO: Load folders from store
+    try {
+      const stored = localStorage.getItem('workflow-folders');
+      if (stored) setFolders(JSON.parse(stored));
+    } catch { /* ignore */ }
+  }, []);
+
+  const newFolder = () => {
+    const name = prompt(t('workflow.folder.new', 'New folder name'));
+    if (!name) return;
+    const folder: Folder = { id: `folder-${Date.now()}`, name };
+    const next = [...folders, folder];
+    setFolders(next);
+    localStorage.setItem('workflow-folders', JSON.stringify(next));
+  };
+
   return (
-    <div className="workflowsfolder-wrapper">
-      {/* Converted from Vue SFC - template below */}
-      <div className="mt-6 border-t pt-4">
-          <div className="flex items-center text-gray-600 dark:text-gray-300">
-            <span className="flex-1"> Folders </span>
+    <div className="mt-6 border-t pt-4">
+      <div className="flex items-center text-gray-600 dark:text-gray-300">
+        <span className="flex-1">Folders</span>
+        <button className="rounded-md transition hover:text-black dark:hover:text-gray-100" onClick={newFolder}>
+          + <span>{t('common.new')}</span>
+        </button>
+      </div>
+      <ul className="mt-2 space-y-1">
+        <li>
+          <button
+            className={`w-full rounded-lg px-4 py-2 text-left ${value === '' ? 'bg-box-transparent font-semibold' : 'hoverable'}`}
+            onClick={() => onChange?.('')}
+          >
+            📂 All
+          </button>
+        </li>
+        {folders.map((folder) => (
+          <li key={folder.id}>
             <button
-              className="rounded-md transition hover:text-black dark:hover:text-gray-100"
-              onClick={newFolder}
+              className={`w-full rounded-lg px-4 py-2 text-left ${folder.id === value ? 'bg-box-transparent font-semibold' : 'hoverable'}`}
+              onClick={() => onChange?.(folder.id)}
             >
-              <i className={"ri-icon"} />
-              <span>{t('common.new')}</span>
+              📁 <span className="text-overflow flex-1">{folder.name}</span>
             </button>
-          </div>
-          <ui-list className="mt-2 space-y-1">
-            <ui-list-item
-              small
-              className="cursor-pointer"
-              active={modelValue === ''}
-              onDragover={onDragover($event, true)}
-              onDragleave={onDragover($event, false)}
-              onDrop={onWorkflowsDrop($event, '')}
-              onClick={emit('update:modelValue', '')}
-            >
-              <i className={"ri-icon"} />
-              <p className="text-overflow flex-1">All</p>
-            </ui-list-item>
-            <ui-list-item
-              /* v-for: folder in folders */ key={folder.id}
-              active={folder.id === modelValue}
-              small
-              className="group cursor-pointer overflow-hidden"
-              onDragover={onDragover($event, true)}
-              onDragleave={onDragover($event, false)}
-              onDrop={onWorkflowsDrop($event, folder.id)}
-              onClick={emit('update:modelValue', folder.id)}
-            >
-              <i className={"ri-icon"} />
-              <p className="text-overflow flex-1">
-                {folder.name}
-              </p>
-              <ui-popover className="leading-none">
-                <template #trigger>
-                  <i className={"ri-icon"} />
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

@@ -1,94 +1,21 @@
-import { defineStore } from 'pinia';
-import browser from 'webextension-polyfill';
-import { fetchApi } from '@/utils/api';
-import {
-  registerWorkflowTrigger,
-  cleanWorkflowTriggers,
-} from '@/utils/workflowTrigger';
-import { findTriggerBlock } from '@/utils/helper';
+import { create } from 'zustand';
 
-export const useHostedWorkflowStore = defineStore('hosted-workflows', {
-  storageMap: {
-    workflows: 'workflowHosts',
-  },
-  state: () => ({
-    workflows: {},
-    retrieved: false,
-  }),
-  getters: {
-    getById: (state) => (id) => state.workflows[id],
-    toArray: (state) => Object.values(state.workflows),
-  },
-  actions: {
-    async loadData() {
-      const { workflowHosts } = await browser.storage.local.get(
-        'workflowHosts'
-      );
-      this.workflows = workflowHosts || {};
-      this.retrieved = true;
-    },
-    async insert(data, idKey = 'hostId') {
-      if (Array.isArray(data)) {
-        data.forEach((item) => {
-          this.workflows[idKey] = item;
-        });
-      } else {
-        this.workflows[idKey] = data;
-      }
+interface HostedWorkflowState {
+  workflows: Record<string, any>;
+  retrieved: boolean;
+  loadData: () => Promise<void>;
+  insert: (data: any) => Promise<any>;
+  update: (data: any) => Promise<void>;
+  delete: (id: string) => Promise<void>;
+}
 
-      await this.saveToStorage('workflows');
+export const useHostedWorkflowStore = create<HostedWorkflowState>((set) => ({
+  workflows: {},
+  retrieved: false,
+  loadData: async () => { /* TODO */ },
+  insert: async (data: any) => data,
+  update: async (data: any) => { /* TODO */ },
+  delete: async (id: string) => { /* TODO */ },
+}));
 
-      return data;
-    },
-    async delete(id) {
-      delete this.workflows[id];
-
-      await this.saveToStorage('workflows');
-      await cleanWorkflowTriggers(id);
-
-      return id;
-    },
-    async update({ id, data }) {
-      if (!this.workflows[id]) return null;
-
-      Object.assign(this.workflows[id], data);
-      await this.saveToStorage('workflows');
-
-      return this.workflows[id];
-    },
-    async fetchWorkflows(ids) {
-      if (!ids || ids.length === 0) return null;
-
-      const response = await fetchApi('/workflows/hosted', {
-        auth: true,
-        method: 'POST',
-        body: JSON.stringify({ hosts: ids }),
-      });
-      const result = await response.json();
-
-      if (!response.ok) throw new Error(result.message);
-
-      const dataToReturn = [];
-
-      result.forEach(({ hostId, status, data }) => {
-        if (status === 'deleted') {
-          delete this.workflows[hostId];
-          cleanWorkflowTriggers(hostId);
-          return;
-        }
-        if (status === 'updated') {
-          const triggerBlock = findTriggerBlock(data.drawflow);
-          registerWorkflowTrigger(hostId, triggerBlock);
-        }
-
-        data.hostId = hostId;
-        dataToReturn.push(data);
-        this.workflows[hostId] = data;
-      });
-
-      await this.saveToStorage('workflows');
-
-      return dataToReturn;
-    },
-  },
-});
+export default useHostedWorkflowStore;

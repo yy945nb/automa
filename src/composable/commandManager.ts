@@ -1,40 +1,28 @@
-import { shallowRef, computed } from 'vue';
+import { useRef, useCallback, useState } from 'react';
 
 export function useCommandManager({ maxHistory = 100 } = {}) {
-  const position = shallowRef(0);
-  let history = [null];
+  const history = useRef<any[]>([]);
+  const [pointer, setPointer] = useState(-1);
 
-  const state = computed(() => ({
-    position: position.value,
-    historyLen: history.length,
-    canUndo: position.value > 0,
-    canRedo: position.value < history.length - 1,
-  }));
+  const execute = useCallback((command: any) => {
+    history.current = history.current.slice(0, pointer + 1);
+    history.current.push(command);
+    if (history.current.length > maxHistory) history.current.shift();
+    setPointer(history.current.length - 1);
+    command.execute?.();
+  }, [pointer, maxHistory]);
 
-  return {
-    state,
-    add(command) {
-      if (position.value < history.length - 1) {
-        history = history.slice(0, position.value + 1);
-      }
-      if (history.length > maxHistory) {
-        history.shift();
-      }
+  const undo = useCallback(() => {
+    if (pointer < 0) return;
+    history.current[pointer]?.undo?.();
+    setPointer(p => p - 1);
+  }, [pointer]);
 
-      history.push(command);
-      position.value += 1;
-    },
-    undo() {
-      if (position.value > 0) {
-        history[position.value].undo();
-        position.value -= 1;
-      }
-    },
-    redo() {
-      if (position.value < history.length - 1) {
-        position.value += 1;
-        history[position.value].execute();
-      }
-    },
-  };
+  const redo = useCallback(() => {
+    if (pointer >= history.current.length - 1) return;
+    setPointer(p => p + 1);
+    history.current[pointer + 1]?.execute?.();
+  }, [pointer]);
+
+  return { execute, undo, redo, canUndo: pointer >= 0, canRedo: pointer < history.current.length - 1 };
 }

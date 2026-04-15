@@ -1,11 +1,14 @@
-import { createApp } from 'vue';
-import App from './App.vue';
-import compsUi from '../lib/compsUi';
-import vRemixicon, { icons } from '../lib/vRemixicon';
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import App from './App';
 import '../assets/css/tailwind.css';
 import '../assets/css/fonts.css';
 import '../assets/css/flow.css';
 
-createApp(App).use(compsUi).use(vRemixicon, icons).mount('#app');
+const container = document.getElementById('app');
+if (container) {
+  const root = createRoot(container);
+  root.render(React.createElement(App));
+}
 
 if (module.hot) module.hot.accept();

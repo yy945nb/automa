@@ -1,4 +1,8 @@
-import Toast from 'vue-toastification';
-import 'vue-toastification/dist/index.css';
+// Vue-toastification removed — using custom toast shim
+export function toast(message: string, options?: any) {
+  console.log('[Toast]', message, options);
+}
 
-export default Toast;
+export default {
+  install: () => { /* no-op for React */ },
+};

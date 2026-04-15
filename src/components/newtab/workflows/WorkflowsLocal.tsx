@@ -1,99 +1,90 @@
-import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import cloneDeep from 'lodash.clonedeep';
-import { arraySorter } from '@/utils/helper';
-import { useUserStore } from '@/stores/user';
-import { useDialog } from '@/composable/dialog';
-import { useWorkflowStore } from '@/stores/workflow';
-import { exportWorkflow } from '@/utils/workflowData';
-import { useSharedWorkflowStore } from '@/stores/sharedWorkflow';
-import RendererWorkflowService from '@/service/renderer/RendererWorkflowService';
-import WorkflowsLocalCard from './WorkflowsLocalCard.vue';
+import { Link } from 'react-router-dom';
 
-interface WorkflowsLocalProps {
-  children?: React.ReactNode;
-  [key: string]: any;
+interface Workflow {
+  id: string;
+  name: string;
+  icon?: string;
+  createdAt?: number;
+  updatedAt?: number;
+  isDisabled?: boolean;
+  description?: string;
 }
 
-export default function WorkflowsLocal({ children, ...props }: WorkflowsLocalProps) {
+interface WorkflowsLocalProps {
+  search?: string;
+  folderId?: string;
+  sort?: { by: string; order: 'asc' | 'desc' };
+  perPage?: number;
+  onPerPageChange?: (n: number) => void;
+}
+
+export default function WorkflowsLocal({ search = '', folderId = '', sort, perPage = 18, onPerPageChange }: WorkflowsLocalProps) {
   const { t } = useTranslation();
-  // TODO: Convert Pinia stores, Vue Router, and other Vue-specific logic to React equivalents
+  const [currentPage, setCurrentPage] = useState(1);
+
+  // TODO: Load from workflowStore.getWorkflows, apply search/folder/sort filters
+  const workflows: Workflow[] = [];
+
+  const filtered = useMemo(() => {
+    let list = [...workflows];
+    if (search) {
+      const q = search.toLowerCase();
+      list = list.filter(w => w.name.toLowerCase().includes(q) || w.description?.toLowerCase().includes(q));
+    }
+    return list;
+  }, [workflows, search]);
+
+  const paged = useMemo(() => {
+    const start = (currentPage - 1) * perPage;
+    return filtered.slice(start, start + perPage);
+  }, [filtered, currentPage, perPage]);
+
+  if (workflows.length === 0) {
+    return (
+      <div className="flex items-center py-12 text-center md:text-left">
+        <div className="ml-4">
+          <h1 className="mb-6 max-w-md text-2xl font-semibold">{t('message.empty')}</h1>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="workflowslocal-wrapper">
-      {/* Converted from Vue SFC - template below */}
-      <div
-          {/* v-if: workflowStore.getWorkflows.length === 0 */}
-          className="md:flex items-center md:text-left text-center py-12"
-        >
-          <img src="@/assets/svg/alien.svg" className="w-96" />
-          <div className="ml-4">
-            <h1 className="mb-6 max-w-md text-2xl font-semibold">
-              {t('message.empty')}
-            </h1>
+    <div>
+      <div className="workflows-container grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+        {paged.map((workflow) => (
+          <Link
+            key={workflow.id}
+            to={`/workflows/${workflow.id}`}
+            className="block rounded-lg border bg-white p-4 transition hover:shadow dark:bg-gray-800"
+          >
+            <p className="font-semibold">{workflow.name}</p>
+            {workflow.description && <p className="mt-1 text-sm text-gray-500">{workflow.description}</p>}
+          </Link>
+        ))}
+      </div>
+      {filtered.length > 18 && (
+        <div className="mt-8 flex items-center justify-between">
+          <div>
+            {t('components.pagination.text1')}
+            <select
+              value={perPage}
+              className="bg-input rounded-md p-1"
+              onChange={(e) => onPerPageChange?.(Number(e.target.value))}
+            >
+              {[18, 32, 64, 128].map(n => <option key={n} value={n}>{n}</option>)}
+            </select>
+            {t('components.pagination.text2', { count: filtered.length })}
+          </div>
+          <div className="flex space-x-2">
+            <button disabled={currentPage <= 1} onClick={() => setCurrentPage(p => p - 1)} className="ui-button">←</button>
+            <span className="px-2 py-1">{currentPage}</span>
+            <button disabled={currentPage * perPage >= filtered.length} onClick={() => setCurrentPage(p => p + 1)} className="ui-button">→</button>
           </div>
         </div>
-        <template {/* v-else */}>
-          <div {/* v-if: pinnedWorkflows.length > 0 */} className="mb-8 border-b pb-8">
-            <div className="flex items-center">
-              <i className={"ri-icon"} />
-              <span>{t('workflow.pinWorkflow.pinned')}</span>
-            </div>
-            <div className="workflows-container mt-4">
-              <workflows-local-card
-                /* v-for: workflow in pinnedWorkflows */ key={workflow.id}
-                workflow={workflow}
-                is-hosted={userStore.hostedWorkflows[workflow.id]}
-                is-shared={sharedWorkflowStore.getById(workflow.id)}
-                is-pinned={true}
-                menu={menu}
-                onDragstart={onDragStart}
-                onExecute={RendererWorkflowService.executeWorkflow(workflow)}
-                onToggle={togglePinWorkflow(workflow)}
-                onToggle={toggleDisableWorkflow(workflow)}
-              />
-            </div>
-          </div>
-          <div className="workflows-container">
-            <workflows-local-card
-              /* v-for: workflow in workflows */ key={workflow.id}
-              workflow={workflow}
-              is-hosted={userStore.hostedWorkflows[workflow.id]}
-              is-shared={sharedWorkflowStore.getById(workflow.id)}
-              is-pinned={state.pinnedWorkflows.includes(workflow.id)}
-              menu={menu}
-              onDragstart={onDragStart}
-              onExecute={RendererWorkflowService.executeWorkflow(workflow)}
-              onToggle={togglePinWorkflow(workflow)}
-              onToggle={toggleDisableWorkflow(workflow)}
-            />
-          </div>
-          <div
-            {/* v-if: filteredWorkflows.length > 18 */}
-            className="mt-8 flex items-center justify-between"
-          >
-            <div>
-              {t('components.pagination.text1')}
-              <select
-                value={pagination.perPage}
-                className="bg-input rounded-md p-1"
-                onChange={onPerPageChange}
-              >
-                <option /* v-for: num in [18, 32, 64, 128] */ key={num} value={num}>
-                  {num}
-                </option>
-              </select>
-              {{
-                t('components.pagination.text2', {
-                  count: filteredWorkflows.length,
-                })
-              }}
-            </div>
-            <ui-pagination
-              value={pagination.currentPage} onChange={(e: any) => { /* TODO update pagination.currentPage */ }}
-              per-page={pagination.perPage}
-              records={filteredWorkflows.length}
-            />
-          </div>
+      )}
     </div>
   );
 }
